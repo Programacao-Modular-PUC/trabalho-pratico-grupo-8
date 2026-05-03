@@ -1,0 +1,246 @@
+/* Estilos globais do sistema Pousadas de Maraú */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+    line-height: 1.5;
+}
+
+a {
+    color: #0a6cb5;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Cabeçalho de navegação */
+.cabecalho {
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecalho .logo {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.cabecalho .menu {
+    display: flex;
+    gap: 20px;
+}
+
+.cabecalho .menu a {
+    color: #fff;
+    font-size: 14px;
+}
+
+.cabecalho .menu a.ativo {
+    border-bottom: 2px solid #fff;
+    padding-bottom: 4px;
+}
+
+.cabecalho .usuario {
+    border: 1px dashed #aaa;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Conteúdo principal */
+.conteudo {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* Caixa branca padrão (usada para formulários e listas) */
+.caixa {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.caixa-titulo {
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px 6px 0 0;
+    margin: -25px -25px 20px -25px;
+    font-size: 15px;
+}
+
+/* Formulários */
+.formulario {
+    display: grid;
+    gap: 15px;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.linha-tres {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+.linha-quatro {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 9px 10px;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.campo input:focus,
+.campo select:focus {
+    outline: none;
+    border-color: #1c1c1c;
+}
+
+/* Botões */
+.botao {
+    padding: 10px 20px;
+    border: 1px solid #1c1c1c;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #1c1c1c;
+    text-align: center;
+    display: inline-block;
+}
+
+.botao:hover {
+    background-color: #eee;
+    text-decoration: none;
+}
+
+.botao-principal {
+    background-color: #1c1c1c;
+    color: #fff;
+}
+
+.botao-principal:hover {
+    background-color: #333;
+}
+
+.acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Tela de login (centralizada) */
+.tela-centralizada {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.painel-login {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 700px;
+    overflow: hidden;
+}
+
+.painel-login .topo {
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 15px;
+}
+
+.painel-login .corpo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+}
+
+.painel-login .imagem {
+    border: 1px dashed #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 13px;
+    min-height: 150px;
+    margin-bottom: 15px;
+}
+
+.painel-login .descricao {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Mensagens */
+.mensagem {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.mensagem-erro {
+    background-color: #ffe0e0;
+    color: #a00;
+    border: 1px solid #f5a;
+}
+
+/* Responsivo simples */
+@media (max-width: 700px) {
+    .linha,
+    .linha-tres,
+    .linha-quatro,
+    .painel-login .corpo {
+        grid-template-columns: 1fr;
+    }
+
+    .cabecalho {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
