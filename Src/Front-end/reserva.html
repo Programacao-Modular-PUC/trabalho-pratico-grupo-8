@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pousadas de Maraú - Reserva</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="logo">Pousadas de Maraú</div>
+        <nav class="menu">
+            <a href="residencias.html">Residências</a>
+            <a href="minhas-reservas.html">Minhas reservas</a>
+            <a href="historico.html">Histórico</a>
+            <a href="login.html">Sair</a>
+        </nav>
+        <div class="usuario">Maria Silva</div>
+    </header>
+
+    <main class="conteudo">
+
+        <a href="quartos.html" class="voltar">← voltar</a>
+
+        <h2 class="titulo-pagina">Quarto 201 · Casal · Residência de Dona Clara</h2>
+
+        <div class="faixa-info">
+            <div><strong>Diária:</strong> R$ 220,00 · inclui ar e hidromassagem</div>
+            <div>Selecione as datas no calendário</div>
+        </div>
+
+        <div class="dois-paineis">
+
+            <div class="calendario">
+                <div class="calendario-topo">
+                    <button type="button">‹</button>
+                    <span>Abril / 2026</span>
+                    <button type="button">›</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>dom</th><th>seg</th><th>ter</th><th>qua</th>
+                            <th>qui</th><th>sex</th><th>sáb</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td><td></td><td></td>
+                            <td>1</td><td>2</td><td>3</td><td>4</td>
+                        </tr>
+                        <tr>
+                            <td>5</td><td>6</td><td>7</td><td>8</td>
+                            <td>9</td><td>10</td><td>11</td>
+                        </tr>
+                        <tr>
+                            <td>12</td><td>13</td><td>14</td><td>15</td>
+                            <td>16</td><td>17</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td class="dia-selecionado">20</td>
+                            <td class="dia-periodo">21</td>
+                            <td class="dia-periodo">22</td>
+                            <td class="dia-periodo">23</td>
+                            <td class="dia-periodo">24</td>
+                            <td class="dia-selecionado">25</td>
+                        </tr>
+                        <tr>
+                            <td class="dia-ocupado">26</td>
+                            <td class="dia-ocupado">27</td>
+                            <td>28</td><td>29</td><td>30</td>
+                            <td></td><td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="legenda">
+                    <span><span class="quad quad-selecionado"></span> entrada / saída</span>
+                    <span><span class="quad quad-periodo"></span> período</span>
+                    <span><span class="quad quad-ocupado"></span> ocupado</span>
+                </div>
+            </div>
+
+            <div>
+                <form class="resumo" action="aluguel.html" method="get">
+                    <div class="campo" style="margin-bottom: 12px;">
+                        <label for="entrada">Entrada</label>
+                        <input type="text" id="entrada" name="entrada" value="20/04/2026 14:00">
+                    </div>
+
+                    <div class="campo" style="margin-bottom: 12px;">
+                        <label for="saida">Saída</label>
+                        <input type="text" id="saida" name="saida" value="25/04/2026 11:00">
+                    </div>
+
+                    <div class="item">
+                        <span>Diárias</span>
+                        <strong>6</strong>
+                    </div>
+                    <div class="item">
+                        <span>Valor da diária</span>
+                        <span>R$ 220,00</span>
+                    </div>
+                    <div class="item total">
+                        <span>Total</span>
+                        <span>R$ 1.320,00</span>
+                    </div>
+
+                    <div class="acoes" style="margin-top: 15px;">
+                        <button type="submit" class="botao">Reservar</button>
+                        <button type="submit" class="botao botao-principal">Alugar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

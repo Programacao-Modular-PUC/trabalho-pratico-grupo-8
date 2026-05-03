@@ -379,6 +379,226 @@ a:hover {
     margin-bottom: 15px;
 }
 
+/* Layout de dois painéis (formulário + resumo lateral) */
+.dois-paineis {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.painel {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+/* Faixa de informação (ex.: "Diária: R$ 220,00") */
+.faixa-info {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+/* Calendário simples */
+.calendario {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.calendario-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.calendario-topo button {
+    border: 1px solid #bbb;
+    background: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.calendario table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendario th,
+.calendario td {
+    text-align: center;
+    padding: 8px;
+    font-size: 13px;
+    border: 1px solid #eee;
+    width: 14.28%;
+}
+
+.calendario th {
+    background-color: #f5f5f5;
+    color: #555;
+}
+
+.dia-selecionado {
+    background-color: #1c1c1c;
+    color: #fff;
+    font-weight: bold;
+}
+
+.dia-periodo {
+    background-color: #ddd;
+}
+
+.dia-ocupado {
+    background-color: #fde8e8;
+    color: #a02020;
+    text-decoration: line-through;
+}
+
+.legenda {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #555;
+}
+
+.legenda .quad {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+.quad-selecionado { background-color: #1c1c1c; }
+.quad-periodo { background-color: #ddd; }
+.quad-ocupado { background-color: #fde8e8; }
+
+/* Resumo lateral (totais da reserva/pagamento) */
+.resumo {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 18px;
+}
+
+.resumo .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px dotted #ddd;
+}
+
+.resumo .item:last-of-type {
+    border-bottom: none;
+}
+
+.resumo .total {
+    font-size: 16px;
+    font-weight: bold;
+    border-top: 2px solid #333;
+    padding-top: 10px;
+    margin-top: 8px;
+}
+
+/* Tabela de dados estilo "rótulo: valor" */
+.tabela-dados {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-dados th,
+.tabela-dados td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    text-align: left;
+}
+
+.tabela-dados th {
+    background-color: #f5f5f5;
+    width: 40%;
+}
+
+/* Caixa estilo recibo (com borda tracejada) */
+.recibo {
+    background-color: #fffce6;
+    border: 2px dashed #888;
+    border-radius: 6px;
+    padding: 25px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.recibo .titulo {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #999;
+}
+
+.recibo .linha-recibo {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted #999;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.recibo .total {
+    border-top: 2px solid #333;
+    border-bottom: none;
+    margin-top: 10px;
+    padding-top: 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Grupos de opções (radios em coluna) */
+.opcoes-radio {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.opcoes-radio label {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Mensagem de sucesso (verde) */
+.mensagem-sucesso {
+    background-color: #e8f5ea;
+    color: #1a7a2e;
+    border: 1px solid #1a7a2e;
+}
+
+/* Cabeçalho com botão à direita (ex.: lista + "Novo") */
+.topo-secao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.topo-secao h2 {
+    font-size: 18px;
+}
+
 /* Responsivo simples */
 @media (max-width: 700px) {
     .linha,
@@ -386,7 +606,8 @@ a:hover {
     .linha-quatro,
     .painel-login .corpo,
     .filtros,
-    .galeria {
+    .galeria,
+    .dois-paineis {
         grid-template-columns: 1fr;
     }
 

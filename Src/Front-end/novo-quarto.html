@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pousadas de Maraú - Novo Quarto</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="logo">Pousadas de Maraú</div>
+        <nav class="menu">
+            <a href="proprietario.html" class="ativo">Minhas residências</a>
+            <a href="alugueis.html">Aluguéis</a>
+            <a href="login.html">Sair</a>
+        </nav>
+        <div class="usuario">João Souza</div>
+    </header>
+
+    <main class="conteudo">
+
+        <div class="caixa">
+            <div class="caixa-titulo">Novo quarto · Residência 01</div>
+
+            <form class="formulario" action="proprietario.html" method="get">
+
+                <div class="linha-tres">
+                    <div class="campo">
+                        <label for="numero">Número do quarto</label>
+                        <input type="text" id="numero" name="numero" required>
+                    </div>
+                    <div class="campo">
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="individual">Individual</option>
+                            <option value="casal">Casal</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="diaria">Valor da diária (R$)</label>
+                        <input type="number" id="diaria" name="diaria"
+                               step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <div class="linha">
+                    <div class="campo">
+                        <label>Ar-condicionado</label>
+                        <div class="opcoes-radio">
+                            <label>
+                                <input type="radio" name="ar" value="sim" required> Sim
+                            </label>
+                            <label>
+                                <input type="radio" name="ar" value="nao"> Não
+                            </label>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label>Hidromassagem</label>
+                        <div class="opcoes-radio">
+                            <label>
+                                <input type="radio" name="hidro" value="sim" required> Sim
+                            </label>
+                            <label>
+                                <input type="radio" name="hidro" value="nao"> Não
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="acoes">
+                    <button type="submit" class="botao botao-principal">Salvar</button>
+                    <a href="proprietario.html" class="botao">Cancelar</a>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+</body>
+</html>

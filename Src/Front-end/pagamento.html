@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pousadas de Maraú - Pagamento</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="logo">Pousadas de Maraú</div>
+        <nav class="menu">
+            <a href="residencias.html">Residências</a>
+            <a href="minhas-reservas.html">Minhas reservas</a>
+            <a href="historico.html">Histórico</a>
+            <a href="login.html">Sair</a>
+        </nav>
+        <div class="usuario">Maria Silva</div>
+    </header>
+
+    <main class="conteudo">
+
+        <div class="caixa">
+            <div class="caixa-titulo">Pagamento</div>
+
+            <div class="dois-paineis">
+
+                <form class="formulario" action="recibo.html" method="get">
+                    <div class="campo">
+                        <label for="forma">Forma de pagamento</label>
+                        <select id="forma" name="forma" required>
+                            <option value="">Selecione</option>
+                            <option value="pix">Pix</option>
+                            <option value="credito">Cartão de crédito</option>
+                            <option value="debito">Cartão de débito</option>
+                            <option value="boleto">Boleto</option>
+                        </select>
+                    </div>
+
+                    <div class="linha-tres">
+                        <div class="campo">
+                            <label for="numero">Número do cartão</label>
+                            <input type="text" id="numero" name="numero"
+                                   placeholder="0000 0000 0000 0000" maxlength="19">
+                        </div>
+                        <div class="campo">
+                            <label for="validade">Validade</label>
+                            <input type="text" id="validade" name="validade"
+                                   placeholder="MM/AA" maxlength="5">
+                        </div>
+                        <div class="campo">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" name="cvv"
+                                   placeholder="000" maxlength="4">
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="nome-cartao">Nome no cartão</label>
+                        <input type="text" id="nome-cartao" name="nome-cartao">
+                    </div>
+
+                    <div class="acoes">
+                        <button type="submit" class="botao botao-principal">Pagar</button>
+                        <a href="aluguel.html" class="botao">Cancelar</a>
+                    </div>
+                </form>
+
+                <div class="resumo">
+                    <div class="item">
+                        <span>Diárias</span>
+                        <strong>6</strong>
+                    </div>
+                    <div class="item">
+                        <span>Valor por diária</span>
+                        <span>R$ 220,00</span>
+                    </div>
+                    <div class="item total">
+                        <span>Total</span>
+                        <span>R$ 1.320,00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
