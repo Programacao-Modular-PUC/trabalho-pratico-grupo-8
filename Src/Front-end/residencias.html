@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pousadas de Maraú - Residências</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="logo">Pousadas de Maraú</div>
+        <nav class="menu">
+            <a href="residencias.html" class="ativo">Residências</a>
+            <a href="minhas-reservas.html">Minhas reservas</a>
+            <a href="historico.html">Histórico</a>
+            <a href="login.html">Sair</a>
+        </nav>
+        <div class="usuario">Maria Silva</div>
+    </header>
+
+    <main class="conteudo">
+
+        <form class="filtros" action="residencias.html" method="get">
+            <div class="campo">
+                <label for="bairro">Bairro</label>
+                <input type="text" id="bairro" name="bairro" placeholder="Ex.: Barra Grande">
+            </div>
+            <div class="campo">
+                <label for="entrada">Entrada</label>
+                <input type="date" id="entrada" name="entrada">
+            </div>
+            <div class="campo">
+                <label for="saida">Saída</label>
+                <input type="date" id="saida" name="saida">
+            </div>
+            <button type="submit" class="botao botao-principal">Buscar</button>
+        </form>
+
+        <div class="card-residencia">
+            <div class="foto">[ foto ]</div>
+            <h3>Residência de Dona Clara</h3>
+            <p class="endereco">Rua das Palmeiras, 12 — Barra Grande</p>
+            <span class="selo selo-livre">3 quartos livres</span>
+            <div class="acoes">
+                <a href="quartos.html" class="botao">Ver quartos</a>
+            </div>
+        </div>
+
+        <div class="card-residencia">
+            <div class="foto">[ foto ]</div>
+            <h3>Casa do Seu Antônio</h3>
+            <p class="endereco">Avenida Beira Mar, 204 — Taipus</p>
+            <span class="selo selo-livre">2 quartos livres</span>
+            <div class="acoes">
+                <a href="quartos.html" class="botao">Ver quartos</a>
+            </div>
+        </div>
+
+        <div class="card-residencia">
+            <div class="foto">[ foto ]</div>
+            <h3>Recanto da Lagoa</h3>
+            <p class="endereco">Travessa das Pedras, 8 — Algodões</p>
+            <span class="selo selo-pendente">1 quarto livre</span>
+            <div class="acoes">
+                <a href="quartos.html" class="botao">Ver quartos</a>
+            </div>
+        </div>
+
+        <div class="card-residencia">
+            <div class="foto">[ foto ]</div>
+            <h3>Pousada do Mirante</h3>
+            <p class="endereco">Rua do Farol, 55 — Barra Grande</p>
+            <span class="selo selo-ocupado">Sem disponibilidade</span>
+            <div class="acoes">
+                <a href="quartos.html" class="botao">Ver quartos</a>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>

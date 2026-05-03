@@ -230,17 +230,172 @@ a:hover {
     border: 1px solid #f5a;
 }
 
+/* Link de voltar */
+.voltar {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Barra de filtros */
+.filtros {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: end;
+}
+
+/* Cards de residência */
+.card-residencia {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.card-residencia .foto {
+    border: 1px dashed #aaa;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.card-residencia h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.card-residencia .endereco {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* Galeria de fotos da residência */
+.galeria {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.galeria .foto {
+    border: 1px dashed #aaa;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 13px;
+    border-radius: 4px;
+}
+
+/* Selo (badge) de situação */
+.selo {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    border: 1px solid;
+    margin-bottom: 10px;
+}
+
+.selo-livre {
+    color: #1a7a2e;
+    border-color: #1a7a2e;
+    background-color: #e8f5ea;
+}
+
+.selo-ocupado {
+    color: #a02020;
+    border-color: #a02020;
+    background-color: #fde8e8;
+}
+
+.selo-pendente {
+    color: #8a6d00;
+    border-color: #8a6d00;
+    background-color: #fff7d6;
+}
+
+.selo-confirmada {
+    color: #1a7a2e;
+    border-color: #1a7a2e;
+    background-color: #e8f5ea;
+}
+
+/* Tabelas */
+.tabela {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+.tabela th,
+.tabela td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.tabela th {
+    background-color: #f0f0f0;
+    font-size: 13px;
+}
+
+.tabela tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela .botoes {
+    display: flex;
+    gap: 8px;
+}
+
+/* Cabeçalho de seção (título grande) */
+.titulo-pagina {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.subtitulo-pagina {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
 /* Responsivo simples */
 @media (max-width: 700px) {
     .linha,
     .linha-tres,
     .linha-quatro,
-    .painel-login .corpo {
+    .painel-login .corpo,
+    .filtros,
+    .galeria {
         grid-template-columns: 1fr;
     }
 
     .cabecalho {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .tabela {
+        font-size: 12px;
     }
 }
