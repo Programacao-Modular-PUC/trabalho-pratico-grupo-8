@@ -10,7 +10,7 @@ public class QuartoIndividual extends Quarto {
 
     @Override
     public double calcularDiaria(int hospedes, boolean querBerco) {
-        // 1ª cama de graça, demais 40 reais cada
+        // 1 cama de graça, demais 40 reais cada
         double adicionalCamas = (qtdCamasSolteiro - 1) * 40;
         return getValorBase() + adicionalCamas + extrasComuns();
     }
