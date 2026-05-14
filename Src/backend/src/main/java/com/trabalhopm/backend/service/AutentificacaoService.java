@@ -1,5 +1,6 @@
 package com.trabalhopm.backend.service;
 
+import com.trabalhopm.backend.dto.LoginDTO;
 import com.trabalhopm.backend.entity.Cliente;
 import com.trabalhopm.backend.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,22 @@ public class AutentificacaoService {
 
         return cliente;
 
+    }
+
+    public Cliente autenticar(LoginDTO dto){
+
+        Optional<Cliente> usuario = clienteRepository.findByEmail(dto.getEmail());
+
+        if(usuario.isEmpty()){
+            throw new RuntimeException("Autentificacao falhou");
+        }
+
+        Cliente cliente = usuario.get();
+
+        if(!cliente.getSenha().equals(dto.getSenha())){
+            throw new RuntimeException("Autentificacao falhou");
+        }
+
+        return cliente;
     }
 }

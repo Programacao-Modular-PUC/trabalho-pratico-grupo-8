@@ -5,6 +5,8 @@ public class ClienteDTO {
 
     private String nome;
     private String cpf;
+
+    private Long id;
     private String endereco;
     private String telefone;
     private String email;
@@ -50,5 +52,12 @@ public class ClienteDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
