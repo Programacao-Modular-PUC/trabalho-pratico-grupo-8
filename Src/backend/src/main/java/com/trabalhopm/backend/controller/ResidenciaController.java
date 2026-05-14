@@ -1,23 +1,19 @@
 package com.trabalhopm.backend.controller;
 
-import com.trabalhopm.backend.dto.ClienteDTO;
-import com.trabalhopm.backend.entity.Cliente;
-import com.trabalhopm.backend.service.ClienteService;
+import com.trabalhopm.backend.entity.Residencia;
+import com.trabalhopm.backend.service.ResidenciaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/residencias")
+public class ResidenciaController {
     @Autowired
-    private ClienteService clienteService;
+    private ResidenciaService residenciaService;
 
-    @PostMapping
-    public Cliente Salvar(@RequestBody ClienteDTO dto){
-        return clienteService.cadastrarCliente(dto);
 
-    }
 }

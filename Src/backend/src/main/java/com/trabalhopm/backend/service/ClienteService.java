@@ -13,7 +13,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public Cliente salvar(ClienteDTO dto){
+    public Cliente cadastrarCliente(ClienteDTO dto){
         Cliente cliente = new Cliente();
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
@@ -22,6 +22,7 @@ public class ClienteService {
 
         return clienteRepository.save(cliente);
     }
+
 
 
 
