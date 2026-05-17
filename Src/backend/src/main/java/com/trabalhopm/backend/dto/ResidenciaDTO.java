@@ -11,12 +11,6 @@ public class ResidenciaDTO {
     private String email;
     private long id;
 
-    public Long getId(){
-        return id;
-    }
-    public Long setId(Long id){
-        this.id = id;
-    }
     public ResidenciaDTO() {
     }
 
@@ -66,5 +60,13 @@ public class ResidenciaDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
