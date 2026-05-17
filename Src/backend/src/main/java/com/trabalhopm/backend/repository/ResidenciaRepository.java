@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ResidenciaRepository extends JpaRepository<Residencia, Long> {
-
+    @Override
+    Optional<Residencia> findById(Long id);
 }

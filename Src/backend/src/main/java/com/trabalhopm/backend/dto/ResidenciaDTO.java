@@ -9,7 +9,14 @@ public class ResidenciaDTO {
     private String cep;
     private String telefone;
     private String email;
+    private long id;
 
+    public Long getId(){
+        return id;
+    }
+    public Long setId(Long id){
+        this.id = id;
+    }
     public ResidenciaDTO() {
     }
 
