@@ -3,6 +3,7 @@ package com.trabalhopm.backend.controller;
 import com.trabalhopm.backend.dto.AluguelDTO;
 import com.trabalhopm.backend.entity.Aluguel;
 import com.trabalhopm.backend.service.AluguelService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,12 @@ public class AluguelController {
         return aluguelService.cadastrarAluguel(dto);
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Aluguel> buscarAluguel(@PathVariable Long id){
+        return ResponseEntity.ok(aluguelService.buscarAluguel(id));
+    }
+
 
 
 

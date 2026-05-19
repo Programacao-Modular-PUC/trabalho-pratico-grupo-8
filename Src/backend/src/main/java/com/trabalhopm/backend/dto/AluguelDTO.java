@@ -7,6 +7,7 @@ public class AluguelDTO {
     private Long residenciaId;
     private Long quartoId;
     private Long clienteId;
+    private Long Id;
 
     private LocalDateTime dataEntrada;
     private LocalDateTime dataSaida;
@@ -15,6 +16,10 @@ public class AluguelDTO {
     private Boolean clienteSolicitouBerco;
 
     public AluguelDTO() {
+    }
+
+    public Long getId(){
+        return Id;
     }
 
     public Long getResidenciaId() {
