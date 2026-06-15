@@ -13,9 +13,9 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html" class="ativo">Minhas reservas</a>
             <a href="historico.html">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
@@ -34,31 +34,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>042</td>
-                    <td>Dona Clara</td>
-                    <td>201 · Casal</td>
-                    <td>20/04</td>
-                    <td>25/04</td>
-                    <td><span class="selo selo-confirmada">Confirmada</span></td>
-                    <td class="botoes">
-                        <a href="aluguel.html" class="botao">Ver</a>
-                        <a href="#" class="botao" onclick="return confirm('Deseja cancelar este aluguel?')">Cancelar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>038</td>
-                    <td>Seu Antônio</td>
-                    <td>102 · Individual</td>
-                    <td>03/05</td>
-                    <td>05/05</td>
-                    <td><span class="selo selo-pendente">Pendente</span></td>
-                    <td class="botoes">
-                        <a href="aluguel.html" class="botao">Ver</a>
-                    </td>
-                </tr>
-            </tbody>
+            <tbody id="ativas"></tbody>
         </table>
 
         <h2 class="titulo-pagina" style="margin-top: 30px;">Histórico recente</h2>
@@ -76,28 +52,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>000123</td>
-                    <td>Dona Clara</td>
-                    <td>201 · Casal</td>
-                    <td>20/04/26</td>
-                    <td>25/04/26</td>
-                    <td>6</td>
-                    <td>R$ 1.320,00</td>
-                    <td><a href="recibo.html" class="botao">Recibo</a></td>
-                </tr>
-                <tr>
-                    <td>000087</td>
-                    <td>Seu Antônio</td>
-                    <td>102 · Ind.</td>
-                    <td>12/12/25</td>
-                    <td>15/12/25</td>
-                    <td>3</td>
-                    <td>R$ 270,00</td>
-                    <td><a href="recibo.html" class="botao">Recibo</a></td>
-                </tr>
-            </tbody>
+            <tbody id="historico"></tbody>
         </table>
 
         <p style="margin-top: 15px;">
@@ -105,6 +60,56 @@
         </p>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const usuario = exigirLogin();
+        mostrarUsuario();
+
+        function residenciaTexto(a) {
+            const r = a.quarto.residencia;
+            return r ? (r.endereco || "") + (r.bairro ? " - " + r.bairro : "") : "-";
+        }
+
+        async function cancelar(id) {
+            if (!confirm("Deseja cancelar este aluguel?")) return;
+            await putJSON("/alugueis/" + id + "/cancelar");
+            carregar();
+        }
+
+        async function carregar() {
+            const lista = await getJSON("/alugueis/cliente/" + usuario.id);
+            const ativas = lista.filter(a => !a.cancelado);
+
+            document.getElementById("ativas").innerHTML = ativas.length ? ativas.map(a => `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>${residenciaTexto(a)}</td>
+                    <td>${a.quarto.id} · ${a.quarto.tipo}</td>
+                    <td>${formatarData(a.dataEntrada)}</td>
+                    <td>${formatarData(a.dataSaida)}</td>
+                    <td><span class="selo selo-confirmada">Confirmada</span></td>
+                    <td class="botoes">
+                        <a href="aluguel.html?aluguelId=${a.id}" class="botao">Ver</a>
+                        <a href="#" class="botao" onclick="cancelar(${a.id});return false;">Cancelar</a>
+                    </td>
+                </tr>`).join("") : '<tr><td colspan="7">Nenhuma reserva ativa.</td></tr>';
+
+            document.getElementById("historico").innerHTML = lista.length ? lista.map(a => `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>${residenciaTexto(a)}</td>
+                    <td>${a.quarto.id} · ${a.quarto.tipo}</td>
+                    <td>${formatarData(a.dataEntrada)}</td>
+                    <td>${formatarData(a.dataSaida)}</td>
+                    <td>${a.numeroDiarias}</td>
+                    <td>${moeda(a.valorFinal)}</td>
+                    <td><a href="recibo.html?aluguelId=${a.id}" class="botao">Recibo</a></td>
+                </tr>`).join("") : '<tr><td colspan="8">Sem histórico.</td></tr>';
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

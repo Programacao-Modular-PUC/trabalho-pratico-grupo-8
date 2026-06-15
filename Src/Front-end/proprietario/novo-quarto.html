@@ -12,34 +12,65 @@
         <nav class="menu">
             <a href="proprietario.html" class="ativo">Minhas residências</a>
             <a href="alugueis.html">Aluguéis</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">João Souza</div>
+        <div class="usuario">Proprietário</div>
     </header>
 
     <main class="conteudo">
 
         <div class="caixa">
-            <div class="caixa-titulo">Novo quarto · Residência 01</div>
+            <div class="caixa-titulo" id="titulo">Novo quarto</div>
 
-            <form class="formulario" action="proprietario.html" method="get">
+            <form class="formulario" id="form-quarto">
 
-                <div class="linha-tres">
-                    <div class="campo">
-                        <label for="numero">Número do quarto</label>
-                        <input type="text" id="numero" name="numero" required>
-                    </div>
+                <div class="linha">
                     <div class="campo">
                         <label for="tipo">Tipo</label>
                         <select id="tipo" name="tipo" required>
                             <option value="individual">Individual</option>
-                            <option value="casal">Casal</option>
+                            <option value="duplo">Duplo</option>
+                            <option value="familia">Família</option>
                         </select>
                     </div>
                     <div class="campo">
-                        <label for="diaria">Valor da diária (R$)</label>
-                        <input type="number" id="diaria" name="diaria"
-                               step="0.01" min="0" required>
+                        <label for="diaria">Valor base (R$)</label>
+                        <input type="number" id="diaria" name="diaria" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <div class="linha" id="campos-individual">
+                    <div class="campo">
+                        <label for="camasSolteiro">Camas de solteiro</label>
+                        <input type="number" id="camasSolteiro" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="linha" id="campos-duplo" style="display:none;">
+                    <div class="campo">
+                        <label>Cama queen/king</label>
+                        <div class="opcoes-radio">
+                            <label><input type="checkbox" id="queenKing"> Sim</label>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="taxaBerco">Taxa do berço (R$)</label>
+                        <input type="number" id="taxaBerco" step="0.01" min="0" value="0">
+                    </div>
+                </div>
+
+                <div class="linha-tres" id="campos-familia" style="display:none;">
+                    <div class="campo">
+                        <label for="camasSolteiroF">Camas de solteiro</label>
+                        <input type="number" id="camasSolteiroF" min="0" value="1">
+                    </div>
+                    <div class="campo">
+                        <label for="camasCasal">Camas de casal</label>
+                        <input type="number" id="camasCasal" min="0" value="1">
+                    </div>
+                    <div class="campo">
+                        <label for="ambientes">Ambientes</label>
+                        <input type="number" id="ambientes" min="1" value="1">
                     </div>
                 </div>
 
@@ -47,26 +78,20 @@
                     <div class="campo">
                         <label>Ar-condicionado</label>
                         <div class="opcoes-radio">
-                            <label>
-                                <input type="radio" name="ar" value="sim" required> Sim
-                            </label>
-                            <label>
-                                <input type="radio" name="ar" value="nao"> Não
-                            </label>
+                            <label><input type="radio" name="ar" value="sim" required> Sim</label>
+                            <label><input type="radio" name="ar" value="nao" checked> Não</label>
                         </div>
                     </div>
                     <div class="campo">
                         <label>Hidromassagem</label>
                         <div class="opcoes-radio">
-                            <label>
-                                <input type="radio" name="hidro" value="sim" required> Sim
-                            </label>
-                            <label>
-                                <input type="radio" name="hidro" value="nao"> Não
-                            </label>
+                            <label><input type="radio" name="hidro" value="sim" required> Sim</label>
+                            <label><input type="radio" name="hidro" value="nao" checked> Não</label>
                         </div>
                     </div>
                 </div>
+
+                <div id="erro" class="mensagem mensagem-erro" style="display:none;"></div>
 
                 <div class="acoes">
                     <button type="submit" class="botao botao-principal">Salvar</button>
@@ -77,6 +102,51 @@
         </div>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const residenciaId = parametro("residenciaId");
+        if (residenciaId) {
+            document.getElementById("titulo").textContent = "Novo quarto · Residência " + residenciaId;
+        }
+
+        const tipoSelect = document.getElementById("tipo");
+        function atualizarCampos() {
+            document.getElementById("campos-individual").style.display = tipoSelect.value === "individual" ? "" : "none";
+            document.getElementById("campos-duplo").style.display = tipoSelect.value === "duplo" ? "" : "none";
+            document.getElementById("campos-familia").style.display = tipoSelect.value === "familia" ? "" : "none";
+        }
+        tipoSelect.addEventListener("change", atualizarCampos);
+        atualizarCampos();
+
+        function numero(id) {
+            return Number(document.getElementById(id).value);
+        }
+
+        document.getElementById("form-quarto").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const erro = document.getElementById("erro");
+            erro.style.display = "none";
+            try {
+                await postJSON("/quartos", {
+                    tipo: tipoSelect.value,
+                    valorBase: numero("diaria"),
+                    possuiAr: document.querySelector('input[name=ar]:checked').value === "sim",
+                    possuiHidro: document.querySelector('input[name=hidro]:checked').value === "sim",
+                    residenciaId: residenciaId ? Number(residenciaId) : null,
+                    qtdCamasSolteiro: tipoSelect.value === "familia" ? numero("camasSolteiroF") : numero("camasSolteiro"),
+                    qtdCamasCasal: numero("camasCasal"),
+                    qtdAmbientes: numero("ambientes"),
+                    queenKing: document.getElementById("queenKing").checked,
+                    taxaBerco: numero("taxaBerco")
+                });
+                window.location.href = "proprietario.html";
+            } catch (ex) {
+                erro.textContent = ex.message;
+                erro.style.display = "block";
+            }
+        });
+    </script>
 
 </body>
 </html>

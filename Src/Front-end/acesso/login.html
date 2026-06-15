@@ -13,7 +13,7 @@
 
             <div class="corpo">
 
-                <form class="formulario" action="../cliente/residencias.html" method="get">
+                <form class="formulario" id="form-login">
                     <div class="campo">
                         <label for="email">E-mail</label>
                         <input type="email" id="email" name="email"
@@ -30,15 +30,41 @@
                         <a href="#">Esqueci minha senha</a>
                     </div>
 
+                    <div id="erro" class="mensagem mensagem-erro" style="display:none;"></div>
+
                     <div class="acoes">
                         <button type="submit" class="botao botao-principal">Entrar</button>
                         <a href="cadastro.html" class="botao">Criar conta</a>
                     </div>
                 </form>
 
+                <div style="margin-top: 15px;">
+                    <a href="../proprietario/proprietario.html">Área do proprietário</a>
+                </div>
+
             </div>
         </div>
     </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        document.getElementById("form-login").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const erro = document.getElementById("erro");
+            erro.style.display = "none";
+            try {
+                const cliente = await postJSON("/auth/login", {
+                    email: document.getElementById("email").value,
+                    senha: document.getElementById("senha").value
+                });
+                salvarUsuario(cliente);
+                window.location.href = "../cliente/residencias.html";
+            } catch (ex) {
+                erro.textContent = ex.message;
+                erro.style.display = "block";
+            }
+        });
+    </script>
 
 </body>
 </html>

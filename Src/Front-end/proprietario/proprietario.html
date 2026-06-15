@@ -12,9 +12,9 @@
         <nav class="menu">
             <a href="proprietario.html" class="ativo">Minhas residências</a>
             <a href="alugueis.html">Aluguéis</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">João Souza</div>
+        <div class="usuario">Proprietário</div>
     </header>
 
     <main class="conteudo">
@@ -30,40 +30,37 @@
                     <th>ID</th>
                     <th>Endereço</th>
                     <th>Bairro</th>
-                    <th>Quartos</th>
-                    <th>Ocupação</th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>01</td>
-                    <td>Rua das Palmeiras, 12</td>
-                    <td>Barra Grande</td>
-                    <td>4</td>
-                    <td>3 de 4</td>
-                    <td class="botoes">
-                        <a href="nova-residencia.html" class="botao">Editar</a>
-                        <a href="novo-quarto.html" class="botao">Quartos</a>
-                        <a href="../cliente/historico.html" class="botao">Histórico</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>02</td>
-                    <td>Av. Beira Mar, 204</td>
-                    <td>Taipus</td>
-                    <td>2</td>
-                    <td>0 de 2</td>
-                    <td class="botoes">
-                        <a href="nova-residencia.html" class="botao">Editar</a>
-                        <a href="novo-quarto.html" class="botao">Quartos</a>
-                        <a href="../cliente/historico.html" class="botao">Histórico</a>
-                    </td>
-                </tr>
-            </tbody>
+            <tbody id="lista"></tbody>
         </table>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        async function carregar() {
+            const residencias = await getJSON("/residencias");
+            const tbody = document.getElementById("lista");
+            if (!residencias.length) {
+                tbody.innerHTML = '<tr><td colspan="4">Nenhuma residência cadastrada.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = residencias.map(r => `
+                <tr>
+                    <td>${r.id}</td>
+                    <td>${r.endereco || ""}${r.numero ? ", " + r.numero : ""}</td>
+                    <td>${r.bairro || ""}</td>
+                    <td class="botoes">
+                        <a href="novo-quarto.html?residenciaId=${r.id}" class="botao">+ Quarto</a>
+                        <a href="../cliente/quartos.html?residenciaId=${r.id}" class="botao">Ver quartos</a>
+                    </td>
+                </tr>`).join("");
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

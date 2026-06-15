@@ -13,29 +13,19 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html">Minhas reservas</a>
             <a href="historico.html">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
 
         <a href="residencias.html" class="voltar">← voltar</a>
 
-        <h2 class="titulo-pagina">Residência de Dona Clara</h2>
-        <p class="subtitulo-pagina">
-            Rua das Palmeiras, 12 · Barra Grande · CEP 45000-000 · (73) 3000-0000 · clara@exemplo.com
-        </p>
+        <h2 class="titulo-pagina" id="titulo">Quartos</h2>
+        <p class="subtitulo-pagina" id="subtitulo"></p>
 
-        <div class="galeria">
-            <div class="foto">[ foto ]</div>
-            <div class="foto">[ foto ]</div>
-            <div class="foto">[ foto ]</div>
-        </div>
-
-        <h3 style="margin-bottom: 10px;">Quartos</h3>
-
-        <form class="filtros" action="quartos.html" method="get">
+        <form class="filtros" id="form-filtro">
             <div class="campo">
                 <label for="tipo">Tipo de quarto</label>
                 <select id="tipo" name="tipo">
@@ -55,61 +45,61 @@
                     <th>Tipo</th>
                     <th>Ar</th>
                     <th>Hidro</th>
-                    <th>Diária</th>
-                    <th>Situação</th>
+                    <th>Valor base</th>
+                    <th>Capacidade</th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>101</td>
-                    <td>Individual</td>
-                    <td>Sim</td>
-                    <td>Não</td>
-                    <td>R$ 120,00</td>
-                    <td><span class="selo selo-livre">Livre</span></td>
-                    <td class="botoes">
-                        <a href="reserva.html" class="botao">Reservar</a>
-                        <a href="reserva.html" class="botao botao-principal">Alugar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>102</td>
-                    <td>Individual</td>
-                    <td>Não</td>
-                    <td>Não</td>
-                    <td>R$ 90,00</td>
-                    <td><span class="selo selo-livre">Livre</span></td>
-                    <td class="botoes">
-                        <a href="reserva.html" class="botao">Reservar</a>
-                        <a href="reserva.html" class="botao botao-principal">Alugar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>201</td>
-                    <td>Casal</td>
-                    <td>Sim</td>
-                    <td>Sim</td>
-                    <td>R$ 220,00</td>
-                    <td><span class="selo selo-livre">Livre</span></td>
-                    <td class="botoes">
-                        <a href="reserva.html" class="botao">Reservar</a>
-                        <a href="reserva.html" class="botao botao-principal">Alugar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>202</td>
-                    <td>Casal</td>
-                    <td>Sim</td>
-                    <td>Não</td>
-                    <td>R$ 180,00</td>
-                    <td><span class="selo selo-ocupado">Ocupado</span></td>
-                    <td>—</td>
-                </tr>
-            </tbody>
+            <tbody id="lista"></tbody>
         </table>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        mostrarUsuario();
+        const residenciaId = parametro("residenciaId");
+        const tipoSelecionado = parametro("tipo") || "";
+        document.getElementById("tipo").value = tipoSelecionado;
+
+        document.getElementById("form-filtro").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const tipo = document.getElementById("tipo").value;
+            let url = "quartos.html?";
+            if (residenciaId) url += "residenciaId=" + residenciaId + "&";
+            if (tipo) url += "tipo=" + tipo;
+            window.location.href = url;
+        });
+
+        async function carregar() {
+            if (residenciaId) {
+                const r = await getJSON("/residencias/" + residenciaId);
+                document.getElementById("titulo").textContent = (r.endereco || "Residência") + (r.numero ? ", " + r.numero : "");
+                document.getElementById("subtitulo").textContent = [r.bairro, r.cep, r.telefone, r.email].filter(Boolean).join(" · ");
+            }
+            let url = "/quartos?";
+            if (residenciaId) url += "residenciaId=" + residenciaId + "&";
+            if (tipoSelecionado) url += "tipo=" + tipoSelecionado;
+            const quartos = await getJSON(url);
+            const tbody = document.getElementById("lista");
+            if (!quartos.length) {
+                tbody.innerHTML = '<tr><td colspan="7">Nenhum quarto encontrado.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = quartos.map(q => `
+                <tr>
+                    <td>${q.id}</td>
+                    <td>${q.tipo}</td>
+                    <td>${sim(q.possuiAR)}</td>
+                    <td>${sim(q.possuiHidro)}</td>
+                    <td>${moeda(q.valorBase)}</td>
+                    <td>${q.capacidade}</td>
+                    <td class="botoes"><a href="reserva.html?quartoId=${q.id}" class="botao botao-principal">Alugar</a></td>
+                </tr>`).join("");
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

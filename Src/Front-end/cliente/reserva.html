@@ -13,103 +13,50 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html">Minhas reservas</a>
             <a href="historico.html">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
 
-        <a href="quartos.html" class="voltar">← voltar</a>
+        <a href="#" class="voltar" onclick="history.back();return false;">← voltar</a>
 
-        <h2 class="titulo-pagina">Quarto 201 · Casal · Residência de Dona Clara</h2>
+        <h2 class="titulo-pagina" id="titulo">Quarto</h2>
 
-        <div class="faixa-info">
-            <div><strong>Diária:</strong> R$ 220,00 · inclui ar e hidromassagem</div>
-            <div>Selecione as datas no calendário</div>
-        </div>
+        <div class="faixa-info" id="info"></div>
 
         <div class="dois-paineis">
 
-            <div class="calendario">
-                <div class="calendario-topo">
-                    <button type="button">‹</button>
-                    <span>Abril / 2026</span>
-                    <button type="button">›</button>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>dom</th><th>seg</th><th>ter</th><th>qua</th>
-                            <th>qui</th><th>sex</th><th>sáb</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td><td></td><td></td>
-                            <td>1</td><td>2</td><td>3</td><td>4</td>
-                        </tr>
-                        <tr>
-                            <td>5</td><td>6</td><td>7</td><td>8</td>
-                            <td>9</td><td>10</td><td>11</td>
-                        </tr>
-                        <tr>
-                            <td>12</td><td>13</td><td>14</td><td>15</td>
-                            <td>16</td><td>17</td><td>18</td>
-                        </tr>
-                        <tr>
-                            <td>19</td>
-                            <td class="dia-selecionado">20</td>
-                            <td class="dia-periodo">21</td>
-                            <td class="dia-periodo">22</td>
-                            <td class="dia-periodo">23</td>
-                            <td class="dia-periodo">24</td>
-                            <td class="dia-selecionado">25</td>
-                        </tr>
-                        <tr>
-                            <td class="dia-ocupado">26</td>
-                            <td class="dia-ocupado">27</td>
-                            <td>28</td><td>29</td><td>30</td>
-                            <td></td><td></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="legenda">
-                    <span><span class="quad quad-selecionado"></span> entrada / saída</span>
-                    <span><span class="quad quad-periodo"></span> período</span>
-                    <span><span class="quad quad-ocupado"></span> ocupado</span>
-                </div>
+            <div class="caixa">
+                <div class="caixa-titulo">Detalhes do quarto</div>
+                <div id="detalhes"></div>
             </div>
 
             <div>
-                <form class="resumo" action="aluguel.html" method="get">
+                <form class="resumo" id="form-reserva">
                     <div class="campo" style="margin-bottom: 12px;">
                         <label for="entrada">Entrada</label>
-                        <input type="text" id="entrada" name="entrada" value="20/04/2026 14:00">
+                        <input type="datetime-local" id="entrada" required>
                     </div>
 
                     <div class="campo" style="margin-bottom: 12px;">
                         <label for="saida">Saída</label>
-                        <input type="text" id="saida" name="saida" value="25/04/2026 11:00">
+                        <input type="datetime-local" id="saida" required>
                     </div>
 
-                    <div class="item">
-                        <span>Diárias</span>
-                        <strong>6</strong>
+                    <div class="campo" style="margin-bottom: 12px;">
+                        <label for="hospedes">Hóspedes</label>
+                        <input type="number" id="hospedes" min="1" value="1" required>
                     </div>
-                    <div class="item">
-                        <span>Valor da diária</span>
-                        <span>R$ 220,00</span>
+
+                    <div class="campo" style="margin-bottom: 12px;">
+                        <label><input type="checkbox" id="berco"> Solicitar berço</label>
                     </div>
-                    <div class="item total">
-                        <span>Total</span>
-                        <span>R$ 1.320,00</span>
-                    </div>
+
+                    <div id="erro" class="mensagem mensagem-erro" style="display:none;"></div>
 
                     <div class="acoes" style="margin-top: 15px;">
-                        <button type="submit" class="botao">Reservar</button>
                         <button type="submit" class="botao botao-principal">Alugar</button>
                     </div>
                 </form>
@@ -118,6 +65,52 @@
         </div>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const usuario = exigirLogin();
+        mostrarUsuario();
+        const quartoId = parametro("quartoId");
+
+        document.getElementById("form-reserva").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const erro = document.getElementById("erro");
+            erro.style.display = "none";
+            try {
+                const aluguel = await postJSON("/alugueis/cadastrar", {
+                    clienteId: usuario.id,
+                    quartoId: Number(quartoId),
+                    dataEntrada: document.getElementById("entrada").value,
+                    dataSaida: document.getElementById("saida").value,
+                    numeroHospedes: Number(document.getElementById("hospedes").value),
+                    clienteSolicitouBerco: document.getElementById("berco").checked
+                });
+                window.location.href = "aluguel.html?aluguelId=" + aluguel.id;
+            } catch (ex) {
+                erro.textContent = ex.message;
+                erro.style.display = "block";
+            }
+        });
+
+        async function carregar() {
+            const quarto = await getJSON("/quartos/" + quartoId);
+            const residencia = quarto.residencia;
+            document.getElementById("titulo").textContent = "Quarto " + quarto.id + " · " + quarto.tipo;
+            document.getElementById("info").innerHTML =
+                `<div><strong>Valor base:</strong> ${moeda(quarto.valorBase)}</div>` +
+                `<div>Capacidade: ${quarto.capacidade} hóspede(s)</div>`;
+            document.getElementById("detalhes").innerHTML = `
+                <table class="tabela-dados">
+                    <tr><th>Tipo</th><td>${quarto.tipo}</td></tr>
+                    <tr><th>Ar-condicionado</th><td>${sim(quarto.possuiAR)}</td></tr>
+                    <tr><th>Hidromassagem</th><td>${sim(quarto.possuiHidro)}</td></tr>
+                    <tr><th>Capacidade</th><td>${quarto.capacidade} hóspede(s)</td></tr>
+                    ${residencia ? `<tr><th>Residência</th><td>${residencia.endereco || ""}${residencia.numero ? ", " + residencia.numero : ""} · ${residencia.bairro || ""}</td></tr>` : ""}
+                </table>`;
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

@@ -13,9 +13,9 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html">Minhas reservas</a>
             <a href="historico.html">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
@@ -24,50 +24,7 @@
             <strong>Pagamento confirmado</strong>
         </div>
 
-        <div class="recibo">
-            <div class="titulo">Pousadas de Maraú — Recibo de Hospedagem</div>
-
-            <div class="linha-recibo">
-                <span>Recibo nº:</span>
-                <strong>000123</strong>
-            </div>
-            <div class="linha-recibo">
-                <span>Cliente:</span>
-                <span>Maria Silva</span>
-            </div>
-            <div class="linha-recibo">
-                <span>Residência:</span>
-                <span>Dona Clara</span>
-            </div>
-            <div class="linha-recibo">
-                <span>Quarto:</span>
-                <span>201 · Casal</span>
-            </div>
-            <div class="linha-recibo">
-                <span>Data e horário de entrada:</span>
-                <strong>20/04/2026 14:00</strong>
-            </div>
-            <div class="linha-recibo">
-                <span>Data e horário de saída:</span>
-                <strong>25/04/2026 11:00</strong>
-            </div>
-            <div class="linha-recibo">
-                <span>Número de diárias:</span>
-                <strong>6</strong>
-            </div>
-            <div class="linha-recibo">
-                <span>Valor da diária:</span>
-                <span>R$ 220,00</span>
-            </div>
-            <div class="linha-recibo">
-                <span>Forma de pagamento:</span>
-                <span>Pix</span>
-            </div>
-            <div class="linha-recibo total">
-                <span>Total a pagar:</span>
-                <span>R$ 1.320,00</span>
-            </div>
-        </div>
+        <div class="recibo" id="recibo"></div>
 
         <div class="acoes" style="justify-content: center; margin-top: 20px;">
             <button type="button" class="botao" onclick="window.print()">Imprimir</button>
@@ -76,6 +33,33 @@
         </div>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        mostrarUsuario();
+        const aluguelId = parametro("aluguelId");
+        const forma = parametro("forma") || "—";
+
+        async function carregar() {
+            const a = await getJSON("/alugueis/" + aluguelId);
+            const residencia = a.quarto.residencia;
+            const valorDiaria = a.numeroDiarias ? a.valorFinal / a.numeroDiarias : 0;
+            document.getElementById("recibo").innerHTML = `
+                <div class="titulo">Pousadas de Maraú — Recibo de Hospedagem</div>
+                <div class="linha-recibo"><span>Recibo nº:</span><strong>${a.id}</strong></div>
+                <div class="linha-recibo"><span>Cliente:</span><span>${a.cliente.nome || ""}</span></div>
+                <div class="linha-recibo"><span>Residência:</span><span>${residencia ? (residencia.endereco || "") + " · " + (residencia.bairro || "") : "-"}</span></div>
+                <div class="linha-recibo"><span>Quarto:</span><span>${a.quarto.id} · ${a.quarto.tipo}</span></div>
+                <div class="linha-recibo"><span>Data e horário de entrada:</span><strong>${formatarData(a.dataEntrada)}</strong></div>
+                <div class="linha-recibo"><span>Data e horário de saída:</span><strong>${formatarData(a.dataSaida)}</strong></div>
+                <div class="linha-recibo"><span>Número de diárias:</span><strong>${a.numeroDiarias}</strong></div>
+                <div class="linha-recibo"><span>Valor da diária:</span><span>${moeda(valorDiaria)}</span></div>
+                <div class="linha-recibo"><span>Forma de pagamento:</span><span>${forma}</span></div>
+                <div class="linha-recibo total"><span>Total a pagar:</span><span>${moeda(a.valorFinal)}</span></div>`;
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

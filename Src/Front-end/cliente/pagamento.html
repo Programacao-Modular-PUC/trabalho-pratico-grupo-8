@@ -13,9 +13,9 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html">Minhas reservas</a>
             <a href="historico.html">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
@@ -25,15 +25,15 @@
 
             <div class="dois-paineis">
 
-                <form class="formulario" action="recibo.html" method="get">
+                <form class="formulario" id="form-pagamento">
                     <div class="campo">
                         <label for="forma">Forma de pagamento</label>
                         <select id="forma" name="forma" required>
                             <option value="">Selecione</option>
-                            <option value="pix">Pix</option>
-                            <option value="credito">Cartão de crédito</option>
-                            <option value="debito">Cartão de débito</option>
-                            <option value="boleto">Boleto</option>
+                            <option value="Pix">Pix</option>
+                            <option value="Cartão de crédito">Cartão de crédito</option>
+                            <option value="Cartão de débito">Cartão de débito</option>
+                            <option value="Boleto">Boleto</option>
                         </select>
                     </div>
 
@@ -62,29 +62,40 @@
 
                     <div class="acoes">
                         <button type="submit" class="botao botao-principal">Pagar</button>
-                        <a href="aluguel.html" class="botao">Cancelar</a>
+                        <a href="#" class="botao" id="cancelar">Cancelar</a>
                     </div>
                 </form>
 
-                <div class="resumo">
-                    <div class="item">
-                        <span>Diárias</span>
-                        <strong>6</strong>
-                    </div>
-                    <div class="item">
-                        <span>Valor por diária</span>
-                        <span>R$ 220,00</span>
-                    </div>
-                    <div class="item total">
-                        <span>Total</span>
-                        <span>R$ 1.320,00</span>
-                    </div>
-                </div>
+                <div class="resumo" id="resumo"></div>
 
             </div>
         </div>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        mostrarUsuario();
+        const aluguelId = parametro("aluguelId");
+        document.getElementById("cancelar").href = "aluguel.html?aluguelId=" + aluguelId;
+
+        document.getElementById("form-pagamento").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const forma = document.getElementById("forma").value;
+            window.location.href = "recibo.html?aluguelId=" + aluguelId + "&forma=" + encodeURIComponent(forma);
+        });
+
+        async function carregar() {
+            const a = await getJSON("/alugueis/" + aluguelId);
+            const valorDiaria = a.numeroDiarias ? a.valorFinal / a.numeroDiarias : 0;
+            document.getElementById("resumo").innerHTML = `
+                <div class="item"><span>Diárias</span><strong>${a.numeroDiarias}</strong></div>
+                <div class="item"><span>Valor por diária</span><span>${moeda(valorDiaria)}</span></div>
+                <div class="item total"><span>Total</span><span>${moeda(a.valorFinal)}</span></div>`;
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

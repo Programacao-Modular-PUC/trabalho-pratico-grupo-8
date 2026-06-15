@@ -11,7 +11,7 @@
         <div class="caixa">
             <div class="caixa-titulo">Criar conta</div>
 
-            <form class="formulario" action="login.html" method="get" onsubmit="return validarSenhas()">
+            <form class="formulario" id="form-cadastro">
 
                 <div class="linha">
                     <div class="campo">
@@ -43,26 +43,6 @@
                            placeholder="Rua, número" required>
                 </div>
 
-                <div class="linha-quatro">
-                    <div class="campo">
-                        <label for="bairro">Bairro</label>
-                        <input type="text" id="bairro" name="bairro" required>
-                    </div>
-                    <div class="campo">
-                        <label for="cep">CEP</label>
-                        <input type="text" id="cep" name="cep"
-                               placeholder="00000-000" required>
-                    </div>
-                    <div class="campo">
-                        <label for="cidade">Cidade</label>
-                        <input type="text" id="cidade" name="cidade" required>
-                    </div>
-                    <div class="campo">
-                        <label for="uf">UF</label>
-                        <input type="text" id="uf" name="uf" maxlength="2" required>
-                    </div>
-                </div>
-
                 <div class="linha">
                     <div class="campo">
                         <label for="senha">Senha</label>
@@ -77,6 +57,7 @@
                 <div id="aviso" class="mensagem mensagem-erro" style="display:none;">
                     As senhas não conferem.
                 </div>
+                <div id="erro" class="mensagem mensagem-erro" style="display:none;"></div>
 
                 <div class="acoes">
                     <button type="submit" class="botao botao-principal">Cadastrar</button>
@@ -87,18 +68,38 @@
         </div>
     </div>
 
+    <script src="../js/app.js"></script>
     <script>
-        function validarSenhas() {
-            var senha = document.getElementById("senha").value;
-            var confirmar = document.getElementById("confirmar").value;
-            var aviso = document.getElementById("aviso");
-
-            if (senha !== confirmar) {
-                aviso.style.display = "block";
-                return false;
-            }
+        document.getElementById("form-cadastro").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const aviso = document.getElementById("aviso");
+            const erro = document.getElementById("erro");
             aviso.style.display = "none";
-            return true;
+            erro.style.display = "none";
+
+            if (document.getElementById("senha").value !== document.getElementById("confirmar").value) {
+                aviso.style.display = "block";
+                return;
+            }
+
+            try {
+                await postJSON("/cliente", {
+                    nome: valor("nome"),
+                    cpf: valor("cpf"),
+                    email: valor("email"),
+                    telefone: valor("telefone"),
+                    endereco: valor("endereco"),
+                    senha: valor("senha")
+                });
+                window.location.href = "login.html";
+            } catch (ex) {
+                erro.textContent = ex.message;
+                erro.style.display = "block";
+            }
+        });
+
+        function valor(id) {
+            return document.getElementById(id).value;
         }
     </script>
 

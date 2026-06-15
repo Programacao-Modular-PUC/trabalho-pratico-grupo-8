@@ -13,9 +13,9 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html">Minhas reservas</a>
             <a href="historico.html" class="ativo">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
@@ -33,44 +33,48 @@
                     <th>Saída</th>
                     <th>Diárias</th>
                     <th>Total</th>
+                    <th>Situação</th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>000123</td>
-                    <td>Dona Clara</td>
-                    <td>201 · Casal</td>
-                    <td>20/04/26</td>
-                    <td>25/04/26</td>
-                    <td>6</td>
-                    <td>R$ 1.320,00</td>
-                    <td><a href="recibo.html" class="botao">Recibo</a></td>
-                </tr>
-                <tr>
-                    <td>000087</td>
-                    <td>Seu Antônio</td>
-                    <td>102 · Ind.</td>
-                    <td>12/12/25</td>
-                    <td>15/12/25</td>
-                    <td>3</td>
-                    <td>R$ 270,00</td>
-                    <td><a href="recibo.html" class="botao">Recibo</a></td>
-                </tr>
-                <tr>
-                    <td>000044</td>
-                    <td>Recanto da Lagoa</td>
-                    <td>201 · Casal</td>
-                    <td>02/08/25</td>
-                    <td>07/08/25</td>
-                    <td>5</td>
-                    <td>R$ 1.000,00</td>
-                    <td><a href="recibo.html" class="botao">Recibo</a></td>
-                </tr>
-            </tbody>
+            <tbody id="lista"></tbody>
         </table>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const usuario = exigirLogin();
+        mostrarUsuario();
+
+        function residenciaTexto(a) {
+            const r = a.quarto.residencia;
+            return r ? (r.endereco || "") + (r.bairro ? " - " + r.bairro : "") : "-";
+        }
+
+        async function carregar() {
+            const lista = await getJSON("/alugueis/cliente/" + usuario.id);
+            const tbody = document.getElementById("lista");
+            if (!lista.length) {
+                tbody.innerHTML = '<tr><td colspan="9">Nenhuma hospedagem realizada.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = lista.map(a => `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>${residenciaTexto(a)}</td>
+                    <td>${a.quarto.id} · ${a.quarto.tipo}</td>
+                    <td>${formatarData(a.dataEntrada)}</td>
+                    <td>${formatarData(a.dataSaida)}</td>
+                    <td>${a.numeroDiarias}</td>
+                    <td>${moeda(a.valorFinal)}</td>
+                    <td>${a.cancelado ? '<span class="selo selo-ocupado">Cancelado</span>' : '<span class="selo selo-confirmada">Concluído</span>'}</td>
+                    <td><a href="recibo.html?aluguelId=${a.id}" class="botao">Recibo</a></td>
+                </tr>`).join("");
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>

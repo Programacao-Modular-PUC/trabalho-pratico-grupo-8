@@ -25,9 +25,7 @@ public class QuartoService {
 
     public List<Quarto> listar(String tipo, Long residenciaId) {
         return quartoRepository.findAll().stream()
-                .filter(quarto -> tipo == null || tipo.isBlank() || quarto.getTipo().equalsIgnoreCase(tipo))
-                .filter(quarto -> residenciaId == null || (quarto.getResidencia() != null && residenciaId.equals(quarto.getResidencia().getId())))
-                .toList();
+                .filter(quarto -> tipo == null || tipo.isBlank() || quarto.getTipo().equalsIgnoreCase(tipo)).filter(quarto -> residenciaId == null || (quarto.getResidencia() != null && residenciaId.equals(quarto.getResidencia().getId()))).toList();
     }
 
     public Quarto buscar(Long id) {

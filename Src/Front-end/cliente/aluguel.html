@@ -13,9 +13,9 @@
             <a href="residencias.html">Residências</a>
             <a href="minhas-reservas.html">Minhas reservas</a>
             <a href="historico.html">Histórico</a>
-            <a href="../acesso/login.html">Sair</a>
+            <a href="../acesso/login.html" onclick="logout()">Sair</a>
         </nav>
-        <div class="usuario">Maria Silva</div>
+        <div class="usuario"></div>
     </header>
 
     <main class="conteudo">
@@ -27,61 +27,52 @@
 
                 <div>
                     <h3 style="margin-bottom: 10px;">Dados</h3>
-                    <table class="tabela-dados">
-                        <tr>
-                            <th>Cliente</th>
-                            <td>Maria Silva</td>
-                        </tr>
-                        <tr>
-                            <th>Residência</th>
-                            <td>Dona Clara</td>
-                        </tr>
-                        <tr>
-                            <th>Quarto</th>
-                            <td>Nº 201 · Casal</td>
-                        </tr>
-                        <tr>
-                            <th>Adicionais</th>
-                            <td>Ar, hidromassagem</td>
-                        </tr>
-                        <tr>
-                            <th>Valor da diária</th>
-                            <td>R$ 220,00</td>
-                        </tr>
-                    </table>
+                    <table class="tabela-dados" id="dados"></table>
                 </div>
 
                 <div>
                     <h3 style="margin-bottom: 10px;">Resumo</h3>
-                    <div class="recibo">
-                        <div class="linha-recibo">
-                            <span>Data e horário de entrada:</span>
-                            <strong>20/04/2026 14:00</strong>
-                        </div>
-                        <div class="linha-recibo">
-                            <span>Data e horário de saída:</span>
-                            <strong>25/04/2026 11:00</strong>
-                        </div>
-                        <div class="linha-recibo">
-                            <span>Número de diárias:</span>
-                            <strong>6</strong>
-                        </div>
-                        <div class="linha-recibo total">
-                            <span>Total a pagar:</span>
-                            <span>R$ 1.320,00</span>
-                        </div>
-                    </div>
+                    <div class="recibo" id="resumo"></div>
                 </div>
 
             </div>
 
             <div class="acoes" style="margin-top: 20px;">
-                <a href="reserva.html" class="botao">Voltar</a>
-                <a href="pagamento.html" class="botao botao-principal">Confirmar e pagar</a>
+                <a href="#" class="botao" onclick="history.back();return false;">Voltar</a>
+                <a href="#" class="botao botao-principal" id="pagar">Confirmar e pagar</a>
             </div>
         </div>
 
     </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        mostrarUsuario();
+        const aluguelId = parametro("aluguelId");
+        document.getElementById("pagar").href = "pagamento.html?aluguelId=" + aluguelId;
+
+        async function carregar() {
+            const a = await getJSON("/alugueis/" + aluguelId);
+            const residencia = a.quarto.residencia;
+            const valorDiaria = a.numeroDiarias ? a.valorFinal / a.numeroDiarias : 0;
+            const adicionais = [a.quarto.possuiAR ? "Ar" : null, a.quarto.possuiHidro ? "Hidromassagem" : null].filter(Boolean).join(", ") || "Nenhum";
+
+            document.getElementById("dados").innerHTML = `
+                <tr><th>Cliente</th><td>${a.cliente.nome || ""}</td></tr>
+                <tr><th>Residência</th><td>${residencia ? (residencia.endereco || "") + " · " + (residencia.bairro || "") : "-"}</td></tr>
+                <tr><th>Quarto</th><td>Nº ${a.quarto.id} · ${a.quarto.tipo}</td></tr>
+                <tr><th>Adicionais</th><td>${adicionais}</td></tr>
+                <tr><th>Valor da diária</th><td>${moeda(valorDiaria)}</td></tr>`;
+
+            document.getElementById("resumo").innerHTML = `
+                <div class="linha-recibo"><span>Data e horário de entrada:</span><strong>${formatarData(a.dataEntrada)}</strong></div>
+                <div class="linha-recibo"><span>Data e horário de saída:</span><strong>${formatarData(a.dataSaida)}</strong></div>
+                <div class="linha-recibo"><span>Número de diárias:</span><strong>${a.numeroDiarias}</strong></div>
+                <div class="linha-recibo total"><span>Total a pagar:</span><span>${moeda(a.valorFinal)}</span></div>`;
+        }
+
+        carregar();
+    </script>
 
 </body>
 </html>
