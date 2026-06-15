@@ -24,6 +24,10 @@ public class Aluguel {
     private boolean querBerco;
     private double valorFinal;
 
+    public boolean conflitaCom(LocalDateTime entrada, LocalDateTime saida) {
+        return entrada.isBefore(dataSaida) && saida.isAfter(dataEntrada);
+    }
+
     public Long getId() {
         return id;
     }

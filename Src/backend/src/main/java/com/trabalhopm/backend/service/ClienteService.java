@@ -3,6 +3,7 @@ package com.trabalhopm.backend.service;
 import com.trabalhopm.backend.dto.ClienteDTO;
 import com.trabalhopm.backend.entity.Cliente;
 import com.trabalhopm.backend.repository.ClienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,6 @@ public class ClienteService {
     }
 
     public Cliente buscarPorID(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        return clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente nao encontrado"));
     }
 }

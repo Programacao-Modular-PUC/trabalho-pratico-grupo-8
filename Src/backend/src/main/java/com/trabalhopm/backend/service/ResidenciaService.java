@@ -1,9 +1,9 @@
 package com.trabalhopm.backend.service;
 
 import com.trabalhopm.backend.dto.ResidenciaDTO;
-import com.trabalhopm.backend.entity.Quarto;
 import com.trabalhopm.backend.entity.Residencia;
 import com.trabalhopm.backend.repository.ResidenciaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class ResidenciaService {
 
     }
     public Residencia buscar(Long id){
-        return residenciaRepository.findById(id).orElseThrow(() -> new RuntimeException("Residência não encontrada"));
+        return residenciaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Residencia nao encontrada"));
     }
 
     public List<Residencia> listarTodas() {

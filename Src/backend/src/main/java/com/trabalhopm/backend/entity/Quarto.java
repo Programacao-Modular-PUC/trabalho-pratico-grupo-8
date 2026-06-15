@@ -1,5 +1,7 @@
 package com.trabalhopm.backend.entity;
 
+import com.trabalhopm.backend.exception.CapacidadeExcedidaException;
+import com.trabalhopm.backend.exception.RecursoNaoPermitidoException;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +21,23 @@ public abstract class Quarto {
     private Residencia residencia;
 
     public abstract double calcularDiaria(int hospedes, boolean querBerco);
+
+    public abstract int getCapacidade();
+
+    public abstract String getTipo();
+
+    public boolean aceitaBerco() {
+        return true;
+    }
+
+    protected void validar(int hospedes, boolean querBerco) {
+        if (hospedes > getCapacidade()) {
+            throw new CapacidadeExcedidaException("Numero de hospedes excede a capacidade do quarto");
+        }
+        if (querBerco && !aceitaBerco()) {
+            throw new RecursoNaoPermitidoException("Berco nao e permitido neste tipo de quarto");
+        }
+    }
 
     protected double extrasComuns() {
         double extra = 0;
