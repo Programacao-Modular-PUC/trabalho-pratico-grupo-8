@@ -6,6 +6,8 @@ import com.trabalhopm.backend.service.AluguelService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/alugueis")
 public class AluguelController {
@@ -26,8 +28,15 @@ public class AluguelController {
         return ResponseEntity.ok(aluguelService.buscarAluguel(id));
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public List<Aluguel> historicoPorCliente(@PathVariable Long clienteId){
+        return aluguelService.historicoPorCliente(clienteId);
+    }
 
-
+    @PutMapping("/{id}/cancelar")
+    public Aluguel cancelarAluguel(@PathVariable Long id){
+        return aluguelService.cancelar(id);
+    }
 
 
 }

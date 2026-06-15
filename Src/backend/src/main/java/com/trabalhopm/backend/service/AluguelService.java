@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class AluguelService {
@@ -63,6 +64,16 @@ public class AluguelService {
         return aluguelRepository.save(aluguel);
     }
 
+    public Aluguel cancelar(Long id) {
+        Aluguel aluguel = buscarAluguel(id);
+        aluguel.setCancelado(true);
+        return aluguelRepository.save(aluguel);
+    }
+
+    public List<Aluguel> historicoPorCliente(Long clienteId) {
+        return aluguelRepository.findByClienteId(clienteId);
+    }
+
     private void validarDatas(LocalDateTime entrada, LocalDateTime saida) {
         if (entrada == null || saida == null) {
             throw new DataInvalidaException("Datas de entrada e saida sao obrigatorias");
@@ -74,7 +85,7 @@ public class AluguelService {
 
     private void verificarDisponibilidade(Quarto quarto, LocalDateTime entrada, LocalDateTime saida) {
         for (Aluguel aluguel : aluguelRepository.findByQuartoId(quarto.getId())) {
-            if (aluguel.conflitaCom(entrada, saida)) {
+            if (!aluguel.isCancelado() && aluguel.conflitaCom(entrada, saida)) {
                 throw new QuartoIndisponivelException("Quarto indisponivel para o periodo selecionado");
             }
         }

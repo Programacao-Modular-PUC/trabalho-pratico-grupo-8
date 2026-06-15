@@ -23,6 +23,7 @@ public class Aluguel {
     private int numeroHospedes;
     private boolean querBerco;
     private double valorFinal;
+    private boolean cancelado;
 
     public boolean conflitaCom(LocalDateTime entrada, LocalDateTime saida) {
         return entrada.isBefore(dataSaida) && saida.isAfter(dataEntrada);
@@ -98,5 +99,13 @@ public class Aluguel {
 
     public void setDataSaida(LocalDateTime dataSaida) {
         this.dataSaida = dataSaida;
+    }
+
+    public boolean isCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(boolean cancelado) {
+        this.cancelado = cancelado;
     }
 }
