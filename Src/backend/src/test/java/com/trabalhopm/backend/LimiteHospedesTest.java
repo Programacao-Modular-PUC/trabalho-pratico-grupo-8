@@ -1,5 +1,6 @@
 package com.trabalhopm.backend;
 
+import com.trabalhopm.backend.entity.QuartoDuplo;
 import com.trabalhopm.backend.entity.QuartoFamilia;
 import com.trabalhopm.backend.entity.QuartoIndividual;
 import com.trabalhopm.backend.exception.CapacidadeExcedidaException;
@@ -18,6 +19,15 @@ class LimiteHospedesTest {
         quarto.setQtdCamasSolteiro(1);
 
         assertThrows(CapacidadeExcedidaException.class, () -> quarto.calcularDiaria(2, false));
+    }
+
+    @Test
+    void quartoDuploExcedeCapacidade() {
+        QuartoDuplo quarto = new QuartoDuplo();
+        quarto.setValorBase(200);
+        quarto.setQueenKing(false);
+
+        assertThrows(CapacidadeExcedidaException.class, () -> quarto.calcularDiaria(3, false));
     }
 
     @Test

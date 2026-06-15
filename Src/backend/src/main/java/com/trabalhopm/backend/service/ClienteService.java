@@ -19,7 +19,9 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
         cliente.setEndereco(dto.getEndereco());
+        cliente.setTelefone(dto.getTelefone());
         cliente.setEmail(dto.getEmail());
+        cliente.setSenha(dto.getSenha());
 
         return clienteRepository.save(cliente);
     }

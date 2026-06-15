@@ -4,12 +4,66 @@ package com.trabalhopm.backend.dto;
 
 public class QuartoDTO {
 
+    private String tipo;
     private Double valorBase;
     private Boolean possuiAr;
     private Boolean possuiHidro;
     private Long residenciaId;
+    private Integer qtdCamasSolteiro;
+    private Integer qtdCamasCasal;
+    private Integer qtdAmbientes;
+    private Boolean queenKing;
+    private Double taxaBerco;
 
     public QuartoDTO() {
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Integer getQtdCamasSolteiro() {
+        return qtdCamasSolteiro;
+    }
+
+    public void setQtdCamasSolteiro(Integer qtdCamasSolteiro) {
+        this.qtdCamasSolteiro = qtdCamasSolteiro;
+    }
+
+    public Integer getQtdCamasCasal() {
+        return qtdCamasCasal;
+    }
+
+    public void setQtdCamasCasal(Integer qtdCamasCasal) {
+        this.qtdCamasCasal = qtdCamasCasal;
+    }
+
+    public Integer getQtdAmbientes() {
+        return qtdAmbientes;
+    }
+
+    public void setQtdAmbientes(Integer qtdAmbientes) {
+        this.qtdAmbientes = qtdAmbientes;
+    }
+
+    public Boolean getQueenKing() {
+        return queenKing;
+    }
+
+    public void setQueenKing(Boolean queenKing) {
+        this.queenKing = queenKing;
+    }
+
+    public Double getTaxaBerco() {
+        return taxaBerco;
+    }
+
+    public void setTaxaBerco(Double taxaBerco) {
+        this.taxaBerco = taxaBerco;
     }
 
     public Double getValorBase() {

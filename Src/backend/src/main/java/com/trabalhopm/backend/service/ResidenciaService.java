@@ -16,8 +16,12 @@ public class ResidenciaService {
     private ResidenciaRepository residenciaRepository;
     public Residencia salvar(ResidenciaDTO dto){
         Residencia residencia = new Residencia();
-        residencia.setCep(dto.getCep());
+        residencia.setEndereco(dto.getEndereco());
+        residencia.setNumero(dto.getNumero());
         residencia.setBairro(dto.getBairro());
+        residencia.setCep(dto.getCep());
+        residencia.setTelefone(dto.getTelefone());
+        residencia.setEmail(dto.getEmail());
 
         return residenciaRepository.save(residencia);
 

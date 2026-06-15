@@ -10,8 +10,17 @@ public class ClienteDTO {
     private String endereco;
     private String telefone;
     private String email;
+    private String senha;
 
     public ClienteDTO() {
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getNome() {

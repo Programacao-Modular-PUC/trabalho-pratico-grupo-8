@@ -1,6 +1,7 @@
 package com.trabalhopm.backend;
 
 import com.trabalhopm.backend.entity.QuartoDuplo;
+import com.trabalhopm.backend.entity.QuartoFamilia;
 import com.trabalhopm.backend.entity.QuartoIndividual;
 import com.trabalhopm.backend.exception.RecursoNaoPermitidoException;
 import org.junit.jupiter.api.Test;
@@ -27,5 +28,15 @@ class RegraBercoTest {
         quarto.setTaxaBerco(60);
 
         assertEquals(300.0, quarto.calcularDiaria(2, true), 0.01);
+    }
+
+    @Test
+    void quartoFamiliaAceitaBerco() {
+        QuartoFamilia quarto = new QuartoFamilia();
+        quarto.setValorBase(300);
+        quarto.setQtdCamasSolteiro(2);
+        quarto.setQtdCamasCasal(2);
+
+        assertEquals(348.0, quarto.calcularDiaria(2, true), 0.01);
     }
 }

@@ -74,6 +74,10 @@ public class AluguelService {
         return aluguelRepository.findByClienteId(clienteId);
     }
 
+    public List<Aluguel> listarTodos() {
+        return aluguelRepository.findAll();
+    }
+
     private void validarDatas(LocalDateTime entrada, LocalDateTime saida) {
         if (entrada == null || saida == null) {
             throw new DataInvalidaException("Datas de entrada e saida sao obrigatorias");

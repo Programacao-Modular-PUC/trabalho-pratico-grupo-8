@@ -1,5 +1,6 @@
 package com.trabalhopm.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,6 +15,8 @@ public class Cliente {
     private String endereco;
     private String telefone;
     private String email;
+
+    @JsonIgnore
     private String senha;
 
     public Long getId() {

@@ -18,8 +18,8 @@ public class ClienteController {
 
     }
     @GetMapping("/{id}")
-    public Cliente buscarCliente(@PathVariable ClienteDTO dto){ //usa @PathVariable porque o id vem pela url, nao pela body da req
-        return clienteService.buscarPorID(dto.getId());
+    public Cliente buscarCliente(@PathVariable Long id){
+        return clienteService.buscarPorID(id);
 
     }
 }

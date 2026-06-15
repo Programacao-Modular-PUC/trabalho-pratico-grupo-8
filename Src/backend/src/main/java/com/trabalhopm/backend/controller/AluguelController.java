@@ -23,6 +23,11 @@ public class AluguelController {
 
     }
 
+    @GetMapping
+    public List<Aluguel> listarTodos(){
+        return aluguelService.listarTodos();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Aluguel> buscarAluguel(@PathVariable Long id){
         return ResponseEntity.ok(aluguelService.buscarAluguel(id));

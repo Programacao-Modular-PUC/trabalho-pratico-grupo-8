@@ -1,5 +1,6 @@
 package com.trabalhopm.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ public class Residencia {
     private String telefone;
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "residencia")
     private List<Quarto> quartos = new ArrayList<>();
 
