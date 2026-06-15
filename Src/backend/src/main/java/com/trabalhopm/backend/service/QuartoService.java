@@ -19,8 +19,6 @@ public class QuartoService {
         if (tipo == null || tipo.isBlank()) {
             return quartoRepository.findAll();
         }
-        return quartoRepository.findAll().stream()
-                .filter(quarto -> quarto.getTipo().equalsIgnoreCase(tipo))
-                .toList();
+        return quartoRepository.findAll().stream().filter(quarto -> quarto.getTipo().equalsIgnoreCase(tipo)).toList();
     }
 }
