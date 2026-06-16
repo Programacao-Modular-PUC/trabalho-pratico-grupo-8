@@ -49,17 +49,34 @@
 
         function residenciaTexto(a) {
             const r = a.quarto.residencia;
-            return r ? (r.endereco || "") + (r.bairro ? " - " + r.bairro : "") : "-";
+            if (!r) {
+                return "-";
+            }
+            let texto = "";
+            if (r.endereco) {
+                texto = r.endereco;
+            }
+            if (r.bairro) {
+                texto += " - " + r.bairro;
+            }
+            return texto;
         }
 
         async function carregar() {
             const lista = await getJSON("/alugueis/cliente/" + usuario.id);
             const tbody = document.getElementById("lista");
-            if (!lista.length) {
+            if (lista.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="9">Nenhuma hospedagem realizada.</td></tr>';
                 return;
             }
-            tbody.innerHTML = lista.map(a => `
+            let html = "";
+            for (let i = 0; i < lista.length; i++) {
+                const a = lista[i];
+                let situacao = '<span class="selo selo-confirmada">Concluído</span>';
+                if (a.cancelado) {
+                    situacao = '<span class="selo selo-ocupado">Cancelado</span>';
+                }
+                html += `
                 <tr>
                     <td>${a.id}</td>
                     <td>${residenciaTexto(a)}</td>
@@ -68,9 +85,11 @@
                     <td>${formatarData(a.dataSaida)}</td>
                     <td>${a.numeroDiarias}</td>
                     <td>${moeda(a.valorFinal)}</td>
-                    <td>${a.cancelado ? '<span class="selo selo-ocupado">Cancelado</span>' : '<span class="selo selo-confirmada">Concluído</span>'}</td>
+                    <td>${situacao}</td>
                     <td><a href="recibo.html?aluguelId=${a.id}" class="botao">Recibo</a></td>
-                </tr>`).join("");
+                </tr>`;
+            }
+            tbody.innerHTML = html;
         }
 
         carregar();

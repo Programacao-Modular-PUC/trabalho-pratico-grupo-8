@@ -33,20 +33,33 @@ public class AluguelService {
     }
 
     public Aluguel buscarAluguel(Long id){
-        return aluguelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluguel nao encontrado"));
+        Aluguel aluguel = aluguelRepository.findById(id).orElse(null);
+        if (aluguel == null) {
+            throw new EntityNotFoundException("Aluguel nao encontrado");
+        }
+        return aluguel;
     }
 
     public Aluguel cadastrarAluguel(AluguelDTO dto) {
 
-        Cliente cliente = clienteRepository.findById(dto.getClienteId()).orElseThrow(() -> new EntityNotFoundException("Cliente nao encontrado"));
+        Cliente cliente = clienteRepository.findById(dto.getClienteId()).orElse(null);
+        if (cliente == null) {
+            throw new EntityNotFoundException("Cliente nao encontrado");
+        }
 
-        Quarto quarto = quartoRepository.findById(dto.getQuartoId()).orElseThrow(() -> new EntityNotFoundException("Quarto nao encontrado"));
+        Quarto quarto = quartoRepository.findById(dto.getQuartoId()).orElse(null);
+        if (quarto == null) {
+            throw new EntityNotFoundException("Quarto nao encontrado");
+        }
 
         validarDatas(dto.getDataEntrada(), dto.getDataSaida());
         verificarDisponibilidade(quarto, dto.getDataEntrada(), dto.getDataSaida());
 
-        int hospedes = dto.getNumeroHospedes() == null ? 1 : dto.getNumeroHospedes();
-        boolean querBerco = Boolean.TRUE.equals(dto.getClienteSolicitouBerco());
+        int hospedes = 1;
+        if (dto.getNumeroHospedes() != null) {
+            hospedes = dto.getNumeroHospedes();
+        }
+        boolean querBerco = dto.getClienteSolicitouBerco() != null && dto.getClienteSolicitouBerco();
 
         int numeroDiarias = (int) ChronoUnit.DAYS.between(dto.getDataEntrada().toLocalDate(), dto.getDataSaida().toLocalDate());
         double valorDiaria = quarto.calcularDiaria(hospedes, querBerco);

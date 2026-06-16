@@ -12,8 +12,17 @@ public class QuartoDuplo extends Quarto {
     @Override
     public double calcularDiaria(int hospedes, boolean querBerco) {
         validar(hospedes, querBerco);
-        double adicionalConforto = queenKing ? 80 : 40;
-        double berco = querBerco ? taxaBerco : 0;
+
+        double adicionalConforto = 40;
+        if (queenKing) {
+            adicionalConforto = 80;
+        }
+
+        double berco = 0;
+        if (querBerco) {
+            berco = taxaBerco;
+        }
+
         return getValorBase() + adicionalConforto + berco + extrasComuns();
     }
 

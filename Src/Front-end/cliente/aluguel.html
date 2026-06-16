@@ -54,12 +54,47 @@
         async function carregar() {
             const a = await getJSON("/alugueis/" + aluguelId);
             const residencia = a.quarto.residencia;
-            const valorDiaria = a.numeroDiarias ? a.valorFinal / a.numeroDiarias : 0;
-            const adicionais = [a.quarto.possuiAR ? "Ar" : null, a.quarto.possuiHidro ? "Hidromassagem" : null].filter(Boolean).join(", ") || "Nenhum";
+
+            let valorDiaria = 0;
+            if (a.numeroDiarias) {
+                valorDiaria = a.valorFinal / a.numeroDiarias;
+            }
+
+            let adicionais = "";
+            if (a.quarto.possuiAR) {
+                adicionais = "Ar";
+            }
+            if (a.quarto.possuiHidro) {
+                if (adicionais !== "") {
+                    adicionais += ", ";
+                }
+                adicionais += "Hidromassagem";
+            }
+            if (adicionais === "") {
+                adicionais = "Nenhum";
+            }
+
+            let textoResidencia = "-";
+            if (residencia) {
+                let endereco = "";
+                if (residencia.endereco) {
+                    endereco = residencia.endereco;
+                }
+                let bairro = "";
+                if (residencia.bairro) {
+                    bairro = residencia.bairro;
+                }
+                textoResidencia = endereco + " · " + bairro;
+            }
+
+            let nomeCliente = "";
+            if (a.cliente.nome) {
+                nomeCliente = a.cliente.nome;
+            }
 
             document.getElementById("dados").innerHTML = `
-                <tr><th>Cliente</th><td>${a.cliente.nome || ""}</td></tr>
-                <tr><th>Residência</th><td>${residencia ? (residencia.endereco || "") + " · " + (residencia.bairro || "") : "-"}</td></tr>
+                <tr><th>Cliente</th><td>${nomeCliente}</td></tr>
+                <tr><th>Residência</th><td>${textoResidencia}</td></tr>
                 <tr><th>Quarto</th><td>Nº ${a.quarto.id} · ${a.quarto.tipo}</td></tr>
                 <tr><th>Adicionais</th><td>${adicionais}</td></tr>
                 <tr><th>Valor da diária</th><td>${moeda(valorDiaria)}</td></tr>`;

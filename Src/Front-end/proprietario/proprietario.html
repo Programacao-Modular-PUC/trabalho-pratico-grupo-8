@@ -43,20 +43,36 @@
         async function carregar() {
             const residencias = await getJSON("/residencias");
             const tbody = document.getElementById("lista");
-            if (!residencias.length) {
+            if (residencias.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4">Nenhuma residência cadastrada.</td></tr>';
                 return;
             }
-            tbody.innerHTML = residencias.map(r => `
+            let html = "";
+            for (let i = 0; i < residencias.length; i++) {
+                const r = residencias[i];
+                let endereco = "";
+                if (r.endereco) {
+                    endereco = r.endereco;
+                }
+                if (r.numero) {
+                    endereco += ", " + r.numero;
+                }
+                let bairro = "";
+                if (r.bairro) {
+                    bairro = r.bairro;
+                }
+                html += `
                 <tr>
                     <td>${r.id}</td>
-                    <td>${r.endereco || ""}${r.numero ? ", " + r.numero : ""}</td>
-                    <td>${r.bairro || ""}</td>
+                    <td>${endereco}</td>
+                    <td>${bairro}</td>
                     <td class="botoes">
                         <a href="novo-quarto.html?residenciaId=${r.id}" class="botao">+ Quarto</a>
                         <a href="../cliente/quartos.html?residenciaId=${r.id}" class="botao">Ver quartos</a>
                     </td>
-                </tr>`).join("");
+                </tr>`;
+            }
+            tbody.innerHTML = html;
         }
 
         carregar();

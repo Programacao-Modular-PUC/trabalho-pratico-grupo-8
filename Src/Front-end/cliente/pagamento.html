@@ -87,7 +87,10 @@
 
         async function carregar() {
             const a = await getJSON("/alugueis/" + aluguelId);
-            const valorDiaria = a.numeroDiarias ? a.valorFinal / a.numeroDiarias : 0;
+            let valorDiaria = 0;
+            if (a.numeroDiarias) {
+                valorDiaria = a.valorFinal / a.numeroDiarias;
+            }
             document.getElementById("resumo").innerHTML = `
                 <div class="item"><span>Diárias</span><strong>${a.numeroDiarias}</strong></div>
                 <div class="item"><span>Valor por diária</span><span>${moeda(valorDiaria)}</span></div>

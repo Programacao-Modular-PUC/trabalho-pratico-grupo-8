@@ -34,6 +34,10 @@ public class ClienteService {
     }
 
     public Cliente buscarPorID(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente nao encontrado"));
+        Cliente cliente = clienteRepository.findById(id).orElse(null);
+        if (cliente == null) {
+            throw new EntityNotFoundException("Cliente nao encontrado");
+        }
+        return cliente;
     }
 }

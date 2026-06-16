@@ -95,17 +95,35 @@
         async function carregar() {
             const quarto = await getJSON("/quartos/" + quartoId);
             const residencia = quarto.residencia;
+
             document.getElementById("titulo").textContent = "Quarto " + quarto.id + " · " + quarto.tipo;
             document.getElementById("info").innerHTML =
-                `<div><strong>Valor base:</strong> ${moeda(quarto.valorBase)}</div>` +
-                `<div>Capacidade: ${quarto.capacidade} hóspede(s)</div>`;
+                "<div><strong>Valor base:</strong> " + moeda(quarto.valorBase) + "</div>" +
+                "<div>Capacidade: " + quarto.capacidade + " hóspede(s)</div>";
+
+            let linhaResidencia = "";
+            if (residencia) {
+                let endereco = "";
+                if (residencia.endereco) {
+                    endereco = residencia.endereco;
+                }
+                if (residencia.numero) {
+                    endereco += ", " + residencia.numero;
+                }
+                let bairro = "";
+                if (residencia.bairro) {
+                    bairro = residencia.bairro;
+                }
+                linhaResidencia = `<tr><th>Residência</th><td>${endereco} · ${bairro}</td></tr>`;
+            }
+
             document.getElementById("detalhes").innerHTML = `
                 <table class="tabela-dados">
                     <tr><th>Tipo</th><td>${quarto.tipo}</td></tr>
                     <tr><th>Ar-condicionado</th><td>${sim(quarto.possuiAR)}</td></tr>
                     <tr><th>Hidromassagem</th><td>${sim(quarto.possuiHidro)}</td></tr>
                     <tr><th>Capacidade</th><td>${quarto.capacidade} hóspede(s)</td></tr>
-                    ${residencia ? `<tr><th>Residência</th><td>${residencia.endereco || ""}${residencia.numero ? ", " + residencia.numero : ""} · ${residencia.bairro || ""}</td></tr>` : ""}
+                    ${linhaResidencia}
                 </table>`;
         }
 

@@ -38,17 +38,43 @@
     <script>
         mostrarUsuario();
         const aluguelId = parametro("aluguelId");
-        const forma = parametro("forma") || "—";
+        let forma = parametro("forma");
+        if (!forma) {
+            forma = "—";
+        }
 
         async function carregar() {
             const a = await getJSON("/alugueis/" + aluguelId);
             const residencia = a.quarto.residencia;
-            const valorDiaria = a.numeroDiarias ? a.valorFinal / a.numeroDiarias : 0;
+
+            let valorDiaria = 0;
+            if (a.numeroDiarias) {
+                valorDiaria = a.valorFinal / a.numeroDiarias;
+            }
+
+            let textoResidencia = "-";
+            if (residencia) {
+                let endereco = "";
+                if (residencia.endereco) {
+                    endereco = residencia.endereco;
+                }
+                let bairro = "";
+                if (residencia.bairro) {
+                    bairro = residencia.bairro;
+                }
+                textoResidencia = endereco + " · " + bairro;
+            }
+
+            let nomeCliente = "";
+            if (a.cliente.nome) {
+                nomeCliente = a.cliente.nome;
+            }
+
             document.getElementById("recibo").innerHTML = `
                 <div class="titulo">Pousadas de Maraú — Recibo de Hospedagem</div>
                 <div class="linha-recibo"><span>Recibo nº:</span><strong>${a.id}</strong></div>
-                <div class="linha-recibo"><span>Cliente:</span><span>${a.cliente.nome || ""}</span></div>
-                <div class="linha-recibo"><span>Residência:</span><span>${residencia ? (residencia.endereco || "") + " · " + (residencia.bairro || "") : "-"}</span></div>
+                <div class="linha-recibo"><span>Cliente:</span><span>${nomeCliente}</span></div>
+                <div class="linha-recibo"><span>Residência:</span><span>${textoResidencia}</span></div>
                 <div class="linha-recibo"><span>Quarto:</span><span>${a.quarto.id} · ${a.quarto.tipo}</span></div>
                 <div class="linha-recibo"><span>Data e horário de entrada:</span><strong>${formatarData(a.dataEntrada)}</strong></div>
                 <div class="linha-recibo"><span>Data e horário de saída:</span><strong>${formatarData(a.dataSaida)}</strong></div>

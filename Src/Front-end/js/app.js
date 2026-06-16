@@ -4,9 +4,16 @@ async function api(path, options) {
     const resposta = await fetch(API + path, options);
     const texto = await resposta.text();
     if (!resposta.ok) {
-        throw new Error(texto || ("Erro " + resposta.status));
+        let mensagem = texto;
+        if (!mensagem) {
+            mensagem = "Erro " + resposta.status;
+        }
+        throw new Error(mensagem);
     }
-    return texto ? JSON.parse(texto) : null;
+    if (texto) {
+        return JSON.parse(texto);
+    }
+    return null;
 }
 
 function getJSON(path) {
@@ -31,7 +38,10 @@ function salvarUsuario(cliente) {
 
 function usuarioLogado() {
     const dados = localStorage.getItem("usuario");
-    return dados ? JSON.parse(dados) : null;
+    if (dados) {
+        return JSON.parse(dados);
+    }
+    return null;
 }
 
 function exigirLogin() {
@@ -59,15 +69,23 @@ function parametro(nome) {
 }
 
 function moeda(valor) {
-    return "R$ " + Number(valor || 0).toFixed(2).replace(".", ",");
+    if (!valor) {
+        valor = 0;
+    }
+    return "R$ " + Number(valor).toFixed(2).replace(".", ",");
 }
 
 function sim(valor) {
-    return valor ? "Sim" : "Não";
+    if (valor) {
+        return "Sim";
+    }
+    return "Não";
 }
 
 function formatarData(texto) {
-    if (!texto) return "";
+    if (!texto) {
+        return "";
+    }
     const data = new Date(texto);
     return data.toLocaleDateString("pt-br") + " " + data.toLocaleTimeString("pt-br", { hour: "2-digit", minute: "2-digit" });
 }

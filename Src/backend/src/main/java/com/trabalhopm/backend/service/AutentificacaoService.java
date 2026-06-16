@@ -16,22 +16,24 @@ public class AutentificacaoService {
     }
 
     public Cliente buscarCliente(String email, String senha){
-        Cliente cliente = clienteRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Cliente nao encontrado"));
-
-        if(!cliente.getSenha().equals(senha)){
+        Cliente cliente = clienteRepository.findByEmail(email).orElse(null);
+        if (cliente == null) {
+            throw new EntityNotFoundException("Cliente nao encontrado");
+        }
+        if (!cliente.getSenha().equals(senha)) {
             throw new IllegalArgumentException("Senha incorreta");
         }
-
         return cliente;
     }
 
     public Cliente autenticar(LoginDTO dto){
-        Cliente cliente = clienteRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new EntityNotFoundException("Cliente nao encontrado"));
-
-        if(!cliente.getSenha().equals(dto.getSenha())){
+        Cliente cliente = clienteRepository.findByEmail(dto.getEmail()).orElse(null);
+        if (cliente == null) {
+            throw new EntityNotFoundException("Cliente nao encontrado");
+        }
+        if (!cliente.getSenha().equals(dto.getSenha())) {
             throw new IllegalArgumentException("Senha incorreta");
         }
-
         return cliente;
     }
 }

@@ -111,11 +111,22 @@
         }
 
         const tipoSelect = document.getElementById("tipo");
-        function atualizarCampos() {
-            document.getElementById("campos-individual").style.display = tipoSelect.value === "individual" ? "" : "none";
-            document.getElementById("campos-duplo").style.display = tipoSelect.value === "duplo" ? "" : "none";
-            document.getElementById("campos-familia").style.display = tipoSelect.value === "familia" ? "" : "none";
+
+        function mostrar(id, condicao) {
+            if (condicao) {
+                document.getElementById(id).style.display = "";
+            } else {
+                document.getElementById(id).style.display = "none";
+            }
         }
+
+        function atualizarCampos() {
+            const tipo = tipoSelect.value;
+            mostrar("campos-individual", tipo === "individual");
+            mostrar("campos-duplo", tipo === "duplo");
+            mostrar("campos-familia", tipo === "familia");
+        }
+
         tipoSelect.addEventListener("change", atualizarCampos);
         atualizarCampos();
 
@@ -123,18 +134,34 @@
             return Number(document.getElementById(id).value);
         }
 
+        function radioMarcado(nome) {
+            const selecionado = document.querySelector("input[name=" + nome + "]:checked");
+            return selecionado.value === "sim";
+        }
+
         document.getElementById("form-quarto").addEventListener("submit", async function (e) {
             e.preventDefault();
             const erro = document.getElementById("erro");
             erro.style.display = "none";
+
+            let idResidencia = null;
+            if (residenciaId) {
+                idResidencia = Number(residenciaId);
+            }
+
+            let camasSolteiro = numero("camasSolteiro");
+            if (tipoSelect.value === "familia") {
+                camasSolteiro = numero("camasSolteiroF");
+            }
+
             try {
                 await postJSON("/quartos", {
                     tipo: tipoSelect.value,
                     valorBase: numero("diaria"),
-                    possuiAr: document.querySelector('input[name=ar]:checked').value === "sim",
-                    possuiHidro: document.querySelector('input[name=hidro]:checked').value === "sim",
-                    residenciaId: residenciaId ? Number(residenciaId) : null,
-                    qtdCamasSolteiro: tipoSelect.value === "familia" ? numero("camasSolteiroF") : numero("camasSolteiro"),
+                    possuiAr: radioMarcado("ar"),
+                    possuiHidro: radioMarcado("hidro"),
+                    residenciaId: idResidencia,
+                    qtdCamasSolteiro: camasSolteiro,
                     qtdCamasCasal: numero("camasCasal"),
                     qtdAmbientes: numero("ambientes"),
                     queenKing: document.getElementById("queenKing").checked,

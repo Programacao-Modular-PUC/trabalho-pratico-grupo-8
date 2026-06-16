@@ -27,7 +27,11 @@ public class ResidenciaService {
 
     }
     public Residencia buscar(Long id){
-        return residenciaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Residencia nao encontrada"));
+        Residencia residencia = residenciaRepository.findById(id).orElse(null);
+        if (residencia == null) {
+            throw new EntityNotFoundException("Residencia nao encontrada");
+        }
+        return residencia;
     }
 
     public List<Residencia> listarTodas() {

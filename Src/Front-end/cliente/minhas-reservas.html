@@ -68,20 +68,37 @@
 
         function residenciaTexto(a) {
             const r = a.quarto.residencia;
-            return r ? (r.endereco || "") + (r.bairro ? " - " + r.bairro : "") : "-";
+            if (!r) {
+                return "-";
+            }
+            let texto = "";
+            if (r.endereco) {
+                texto = r.endereco;
+            }
+            if (r.bairro) {
+                texto += " - " + r.bairro;
+            }
+            return texto;
         }
 
         async function cancelar(id) {
-            if (!confirm("Deseja cancelar este aluguel?")) return;
+            if (!confirm("Deseja cancelar este aluguel?")) {
+                return;
+            }
             await putJSON("/alugueis/" + id + "/cancelar");
             carregar();
         }
 
         async function carregar() {
             const lista = await getJSON("/alugueis/cliente/" + usuario.id);
-            const ativas = lista.filter(a => !a.cancelado);
 
-            document.getElementById("ativas").innerHTML = ativas.length ? ativas.map(a => `
+            let htmlAtivas = "";
+            for (let i = 0; i < lista.length; i++) {
+                const a = lista[i];
+                if (a.cancelado) {
+                    continue;
+                }
+                htmlAtivas += `
                 <tr>
                     <td>${a.id}</td>
                     <td>${residenciaTexto(a)}</td>
@@ -93,9 +110,17 @@
                         <a href="aluguel.html?aluguelId=${a.id}" class="botao">Ver</a>
                         <a href="#" class="botao" onclick="cancelar(${a.id});return false;">Cancelar</a>
                     </td>
-                </tr>`).join("") : '<tr><td colspan="7">Nenhuma reserva ativa.</td></tr>';
+                </tr>`;
+            }
+            if (htmlAtivas === "") {
+                htmlAtivas = '<tr><td colspan="7">Nenhuma reserva ativa.</td></tr>';
+            }
+            document.getElementById("ativas").innerHTML = htmlAtivas;
 
-            document.getElementById("historico").innerHTML = lista.length ? lista.map(a => `
+            let htmlHistorico = "";
+            for (let i = 0; i < lista.length; i++) {
+                const a = lista[i];
+                htmlHistorico += `
                 <tr>
                     <td>${a.id}</td>
                     <td>${residenciaTexto(a)}</td>
@@ -105,7 +130,12 @@
                     <td>${a.numeroDiarias}</td>
                     <td>${moeda(a.valorFinal)}</td>
                     <td><a href="recibo.html?aluguelId=${a.id}" class="botao">Recibo</a></td>
-                </tr>`).join("") : '<tr><td colspan="8">Sem histórico.</td></tr>';
+                </tr>`;
+            }
+            if (htmlHistorico === "") {
+                htmlHistorico = '<tr><td colspan="8">Sem histórico.</td></tr>';
+            }
+            document.getElementById("historico").innerHTML = htmlHistorico;
         }
 
         carregar();

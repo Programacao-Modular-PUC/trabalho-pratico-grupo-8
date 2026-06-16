@@ -59,34 +59,68 @@
     <script>
         mostrarUsuario();
         const residenciaId = parametro("residenciaId");
-        const tipoSelecionado = parametro("tipo") || "";
+        let tipoSelecionado = parametro("tipo");
+        if (!tipoSelecionado) {
+            tipoSelecionado = "";
+        }
         document.getElementById("tipo").value = tipoSelecionado;
 
         document.getElementById("form-filtro").addEventListener("submit", function (e) {
             e.preventDefault();
             const tipo = document.getElementById("tipo").value;
             let url = "quartos.html?";
-            if (residenciaId) url += "residenciaId=" + residenciaId + "&";
-            if (tipo) url += "tipo=" + tipo;
+            if (residenciaId) {
+                url += "residenciaId=" + residenciaId + "&";
+            }
+            if (tipo) {
+                url += "tipo=" + tipo;
+            }
             window.location.href = url;
         });
 
         async function carregar() {
             if (residenciaId) {
                 const r = await getJSON("/residencias/" + residenciaId);
-                document.getElementById("titulo").textContent = (r.endereco || "Residência") + (r.numero ? ", " + r.numero : "");
-                document.getElementById("subtitulo").textContent = [r.bairro, r.cep, r.telefone, r.email].filter(Boolean).join(" · ");
+                let titulo = "Residência";
+                if (r.endereco) {
+                    titulo = r.endereco;
+                }
+                if (r.numero) {
+                    titulo += ", " + r.numero;
+                }
+                document.getElementById("titulo").textContent = titulo;
+
+                const partes = [r.bairro, r.cep, r.telefone, r.email];
+                let subtitulo = "";
+                for (let i = 0; i < partes.length; i++) {
+                    if (partes[i]) {
+                        if (subtitulo !== "") {
+                            subtitulo += " · ";
+                        }
+                        subtitulo += partes[i];
+                    }
+                }
+                document.getElementById("subtitulo").textContent = subtitulo;
             }
+
             let url = "/quartos?";
-            if (residenciaId) url += "residenciaId=" + residenciaId + "&";
-            if (tipoSelecionado) url += "tipo=" + tipoSelecionado;
+            if (residenciaId) {
+                url += "residenciaId=" + residenciaId + "&";
+            }
+            if (tipoSelecionado) {
+                url += "tipo=" + tipoSelecionado;
+            }
             const quartos = await getJSON(url);
+
             const tbody = document.getElementById("lista");
-            if (!quartos.length) {
+            if (quartos.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="7">Nenhum quarto encontrado.</td></tr>';
                 return;
             }
-            tbody.innerHTML = quartos.map(q => `
+            let html = "";
+            for (let i = 0; i < quartos.length; i++) {
+                const q = quartos[i];
+                html += `
                 <tr>
                     <td>${q.id}</td>
                     <td>${q.tipo}</td>
@@ -95,7 +129,9 @@
                     <td>${moeda(q.valorBase)}</td>
                     <td>${q.capacidade}</td>
                     <td class="botoes"><a href="reserva.html?quartoId=${q.id}" class="botao botao-principal">Alugar</a></td>
-                </tr>`).join("");
+                </tr>`;
+            }
+            tbody.innerHTML = html;
         }
 
         carregar();

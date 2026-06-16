@@ -39,26 +39,53 @@
 
         function render(lista) {
             const div = document.getElementById("lista");
-            if (!lista.length) {
+            if (lista.length === 0) {
                 div.innerHTML = "<p>Nenhuma residência cadastrada.</p>";
                 return;
             }
-            div.innerHTML = lista.map(r => `
+            let html = "";
+            for (let i = 0; i < lista.length; i++) {
+                const r = lista[i];
+                let nome = "Residência";
+                if (r.endereco) {
+                    nome = r.endereco;
+                }
+                if (r.numero) {
+                    nome = nome + ", " + r.numero;
+                }
+                let bairro = "";
+                if (r.bairro) {
+                    bairro = r.bairro;
+                }
+                html += `
                 <div class="card-residencia">
                     <div class="foto">[ foto ]</div>
-                    <h3>${r.endereco || "Residência"}${r.numero ? ", " + r.numero : ""}</h3>
-                    <p class="endereco">${r.bairro || ""}</p>
+                    <h3>${nome}</h3>
+                    <p class="endereco">${bairro}</p>
                     <div class="acoes">
                         <a href="quartos.html?residenciaId=${r.id}" class="botao">Ver quartos</a>
                     </div>
-                </div>`).join("");
+                </div>`;
+            }
+            div.innerHTML = html;
         }
 
-        document.getElementById("form-filtro").addEventListener("submit", function (e) {
+        function filtrar(e) {
             e.preventDefault();
             const termo = document.getElementById("bairro").value.toLowerCase();
-            render(residencias.filter(r => (r.bairro || "").toLowerCase().includes(termo)));
-        });
+            const filtradas = [];
+            for (let i = 0; i < residencias.length; i++) {
+                let bairro = "";
+                if (residencias[i].bairro) {
+                    bairro = residencias[i].bairro.toLowerCase();
+                }
+                if (bairro.includes(termo)) {
+                    filtradas.push(residencias[i]);
+                }
+            }
+            render(filtradas);
+        }
+        document.getElementById("form-filtro").addEventListener("submit", filtrar);
 
         async function carregar() {
             residencias = await getJSON("/residencias");
