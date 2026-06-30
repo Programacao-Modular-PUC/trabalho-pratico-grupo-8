@@ -6,6 +6,8 @@ import com.trabalhopm.backend.entity.Cliente;
 import com.trabalhopm.backend.entity.Quarto;
 import com.trabalhopm.backend.exception.DataInvalidaException;
 import com.trabalhopm.backend.exception.QuartoIndisponivelException;
+import com.trabalhopm.backend.tarifa.GerenciadorTarifas;
+import com.trabalhopm.backend.tarifa.Tarifa;
 import com.trabalhopm.backend.repository.AluguelRepository;
 import com.trabalhopm.backend.repository.ClienteRepository;
 import com.trabalhopm.backend.repository.QuartoRepository;
@@ -64,6 +66,9 @@ public class AluguelService {
         int numeroDiarias = (int) ChronoUnit.DAYS.between(dto.getDataEntrada().toLocalDate(), dto.getDataSaida().toLocalDate());
         double valorDiaria = quarto.calcularDiaria(hospedes, querBerco);
 
+        Tarifa tarifa = GerenciadorTarifas.getInstance().getTarifaAtiva();
+        double valorDiariaComTarifa = tarifa.aplicar(valorDiaria);
+
         Aluguel aluguel = new Aluguel();
         aluguel.setCliente(cliente);
         aluguel.setQuarto(quarto);
@@ -72,7 +77,8 @@ public class AluguelService {
         aluguel.setNumeroHospedes(hospedes);
         aluguel.setQuerBerco(querBerco);
         aluguel.setNumeroDiarias(numeroDiarias);
-        aluguel.setValorFinal(valorDiaria * numeroDiarias);
+        aluguel.setTarifa(tarifa.getNome());
+        aluguel.setValorFinal(valorDiariaComTarifa * numeroDiarias);
 
         return aluguelRepository.save(aluguel);
     }

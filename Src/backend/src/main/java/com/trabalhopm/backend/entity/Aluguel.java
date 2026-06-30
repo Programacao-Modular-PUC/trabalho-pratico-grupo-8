@@ -24,6 +24,7 @@ public class Aluguel {
     private boolean querBerco;
     private double valorFinal;
     private boolean cancelado;
+    private String tarifa;
 
     public boolean conflitaCom(LocalDateTime entrada, LocalDateTime saida) {
         return entrada.isBefore(dataSaida) && saida.isAfter(dataEntrada);
@@ -107,5 +108,13 @@ public class Aluguel {
 
     public void setCancelado(boolean cancelado) {
         this.cancelado = cancelado;
+    }
+
+    public String getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(String tarifa) {
+        this.tarifa = tarifa;
     }
 }
