@@ -25,6 +25,7 @@ public class PacoteController {
         lista.add("PASSEIO");
         lista.add("TRANSPORTE");
         lista.add("LAVANDERIA");
+        lista.add("TRASLADO");
         return lista;
     }
 

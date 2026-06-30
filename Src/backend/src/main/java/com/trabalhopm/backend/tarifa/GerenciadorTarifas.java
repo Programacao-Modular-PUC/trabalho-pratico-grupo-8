@@ -15,6 +15,8 @@ public class GerenciadorTarifas {
         tarifas.add(new TarifaNormal());
         tarifas.add(new TarifaAltaTemporada());
         tarifas.add(new TarifaBaixaTemporada());
+        tarifas.add(new TarifaFeriado());
+        tarifas.add(new TarifaEventoEspecial());
         tarifas.add(new TarifaPromocional());
         tarifaAtiva = tarifas.get(0);
     }

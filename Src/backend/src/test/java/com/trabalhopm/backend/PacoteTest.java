@@ -6,6 +6,7 @@ import com.trabalhopm.backend.pacote.PacoteService;
 import com.trabalhopm.backend.pacote.PasseioTuristico;
 import com.trabalhopm.backend.pacote.Servico;
 import com.trabalhopm.backend.pacote.Transporte;
+import com.trabalhopm.backend.pacote.Traslado;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -37,6 +38,13 @@ class PacoteTest {
         servico = new Transporte(servico);
         assertEquals(730.0, servico.getPreco(), 0.01);
         assertEquals("Hospedagem, Cafe da manha, Passeio turistico, Transporte", servico.getDescricao());
+    }
+
+    @Test
+    void adicionaTraslado() {
+        Servico servico = new Traslado(new Hospedagem(500));
+        assertEquals(560.0, servico.getPreco(), 0.01);
+        assertEquals("Hospedagem, Traslado aeroporto", servico.getDescricao());
     }
 
     @Test

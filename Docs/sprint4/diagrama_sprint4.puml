@@ -8,7 +8,7 @@ skinparam class {
   BorderColor #34495E
   ArrowColor #34495E
 }
-title Sprint 4 - Padroes de Projeto (Strategy, Singleton e Decorator)
+title Sprint 4: Padrões de Projeto (Strategy, Singleton e Decorator)
 
 interface Tarifa {
   +getNome() : String
@@ -17,11 +17,15 @@ interface Tarifa {
 class TarifaNormal
 class TarifaAltaTemporada
 class TarifaBaixaTemporada
+class TarifaFeriado
+class TarifaEventoEspecial
 class TarifaPromocional
 
 Tarifa <|.. TarifaNormal
 Tarifa <|.. TarifaAltaTemporada
 Tarifa <|.. TarifaBaixaTemporada
+Tarifa <|.. TarifaFeriado
+Tarifa <|.. TarifaEventoEspecial
 Tarifa <|.. TarifaPromocional
 
 class GerenciadorTarifas {
@@ -45,6 +49,7 @@ class CafeDaManha
 class PasseioTuristico
 class Transporte
 class Lavanderia
+class Traslado
 
 Servico <|.. Hospedagem
 Servico <|.. ServicoAdicional
@@ -53,6 +58,7 @@ ServicoAdicional <|-- CafeDaManha
 ServicoAdicional <|-- PasseioTuristico
 ServicoAdicional <|-- Transporte
 ServicoAdicional <|-- Lavanderia
+ServicoAdicional <|-- Traslado
 
 class AluguelService
 class Quarto
@@ -63,13 +69,13 @@ AluguelService ..> Quarto : calcularDiaria
 PacoteService ..> Servico : monta o pacote
 
 note bottom of GerenciadorTarifas
-  Singleton: uma unica instancia
+  Singleton: uma única instância
   guarda a tarifa ativa do sistema
 end note
 
 note bottom of ServicoAdicional
-  Decorator: cada servico adicional
-  envolve outro Servico e soma preco
+  Decorator: cada serviço adicional
+  envolve outro Serviço e soma o preço
 end note
 
 @enduml

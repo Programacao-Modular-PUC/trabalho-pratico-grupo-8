@@ -30,6 +30,9 @@ public class PacoteService {
         if (nome.equalsIgnoreCase("LAVANDERIA")) {
             return new Lavanderia(servico);
         }
+        if (nome.equalsIgnoreCase("TRASLADO")) {
+            return new Traslado(servico);
+        }
         throw new IllegalArgumentException("Servico invalido: " + nome);
     }
 }

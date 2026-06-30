@@ -3,6 +3,8 @@ package com.trabalhopm.backend;
 import com.trabalhopm.backend.tarifa.GerenciadorTarifas;
 import com.trabalhopm.backend.tarifa.TarifaAltaTemporada;
 import com.trabalhopm.backend.tarifa.TarifaBaixaTemporada;
+import com.trabalhopm.backend.tarifa.TarifaEventoEspecial;
+import com.trabalhopm.backend.tarifa.TarifaFeriado;
 import com.trabalhopm.backend.tarifa.TarifaNormal;
 import com.trabalhopm.backend.tarifa.TarifaPromocional;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,16 @@ class TarifaTest {
     @Test
     void tarifaPromocionalDaDesconto() {
         assertEquals(90.0, new TarifaPromocional().aplicar(100), 0.01);
+    }
+
+    @Test
+    void tarifaFeriadoAumenta() {
+        assertEquals(130.0, new TarifaFeriado().aplicar(100), 0.01);
+    }
+
+    @Test
+    void tarifaEventoEspecialAumenta() {
+        assertEquals(140.0, new TarifaEventoEspecial().aplicar(100), 0.01);
     }
 
     @Test
